@@ -1,0 +1,96 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Détail Commande Premium
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="ord-loader" *ngIf="loading">
+  <mat-spinner diameter="48"></mat-spinner>
+  <p>Chargement de la commande…</p>
+</div>
+
+<div class="page-container ord-detail-page" *ngIf="!loading && order">
+
+  <!-- ══ HEADER ═══════════════════════════════════════════════════ -->
+  <header class="ord-detail-header fade-in-up">
+    <div class="ord-detail-header__left">
+      <button mat-icon-button class="btn-back" routerLink="/commandes" matTooltip="Retour aux commandes">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <div class="ord-detail-header__eyebrow">
+          <mat-icon>receipt_long</mat-icon> Détail de la commande
+        </div>
+        <h1 class="ord-detail-header__title">{{ order.orderNumber }}</h1>
+      </div>
+    </div>
+    <div class="ord-detail-header__right">
+      <span class="ord-badge {{ getStatusClass(order.status) }}">
+        <span class="ord-badge__dot"></span>
+        {{ getStatusLabel(order.status) }}
+      </span>
+    </div>
+  </header>
+
+  <!-- ══ CONTENU ══════════════════════════════════════════════════ -->
+  <div class="ord-detail-grid">
+
+    <!-- ── Carte : Récapitulatif ─────────────────────────────────── -->
+    <div class="ord-detail-card fade-in-up" style="animation-delay:.06s">
+      <div class="ord-detail-card__header">
+        <mat-icon>summarize</mat-icon>
+        <h3>Récapitulatif de la commande</h3>
+      </div>
+
+      <div class="ord-info-list">
+        <div class="ord-info-row">
+          <span class="ord-info-row__label">N° Commande</span>
+          <strong class="ord-info-row__value mono">{{ order.orderNumber }}</strong>
+        </div>
+        <div class="ord-info-row">
+          <span class="ord-info-row__label">Date</span>
+          <strong class="ord-info-row__value">{{ order.createdAt | date:'dd MMMM yyyy — HH:mm' }}</strong>
+        </div>
+        <div class="ord-info-row">
+          <span class="ord-info-row__label">Sous-total</span>
+          <span class="ord-info-row__value">{{ order.subtotal | number:'1.2-2' }} DT</span>
+        </div>
+        <div class="ord-info-row">
+          <span class="ord-info-row__label">Livraison</span>
+          <span class="ord-info-row__value">{{ order.shippingFee | number:'1.2-2' }} DT</span>
+        </div>
+        <div class="ord-info-row" *ngIf="order.discountAmount">
+          <span class="ord-info-row__label">Réduction</span>
+          <span class="ord-info-row__value discount">-{{ order.discountAmount | number:'1.2-2' }} DT</span>
+        </div>
+        <div class="ord-info-row ord-info-row--total">
+          <span class="ord-info-row__label">Total TTC</span>
+          <span class="ord-info-row__value amount">{{ order.totalAmount | number:'1.2-2' }} DT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Carte : Mise à jour statut (Admin / Seller) ─────────── -->
+    <div class="ord-detail-card fade-in-up" *ngIf="canUpdateStatus" style="animation-delay:.12s">
+      <div class="ord-detail-card__header">
+        <mat-icon>tune</mat-icon>
+        <h3>Mettre à jour le statut</h3>
+      </div>
+
+      <p class="ord-detail-card__hint">
+        Sélectionnez le nouveau statut pour cette acquisition.
+      </p>
+
+      <mat-form-field appearance="outline" class="art-field full-width" style="margin-bottom: 20px;">
+        <mat-label>Nouveau statut</mat-label>
+        <mat-select [(ngModel)]="selectedStatus">
+          <mat-option *ngFor="let s of statusOptions" [value]="s">{{ getStatusLabel(s) }}</mat-option>
+        </mat-select>
+        <mat-icon matPrefix style="color: var(--art-text-light); margin-right: 8px;">flag</mat-icon>
+      </mat-form-field>
+
+      <button class="ord-update-btn" (click)="updateStatus()" [disabled]="!selectedStatus">
+        <mat-icon>check_circle</mat-icon>
+        Confirmer la mise à jour
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,158 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Finalisation d'Acquisition (Checkout)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="page-container checkout-page">
+  <div class="page-header" style="justify-content: center; text-align: center;">
+    <h1>Finaliser votre acquisition</h1>
+  </div>
+
+  <!-- Stepper visuel -->
+  <div class="art-stepper" *ngIf="!loading && cart">
+    <div class="step done">
+      <div class="step-number"><mat-icon>check</mat-icon></div>
+      <div class="step-label">Panier</div>
+    </div>
+    <div class="step-connector done"></div>
+    <div class="step active">
+      <div class="step-number">2</div>
+      <div class="step-label">Livraison</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-label">Paiement</div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div class="checkout-layout" *ngIf="!loading && cart">
+    
+    <!-- Zone de gauche : Étapes -->
+    <div class="checkout-steps-section">
+      
+      <!-- Étape 1 : Adresse de livraison -->
+      <div class="checkout-step-card">
+        <div class="step-header">
+          <div class="step-number-badge">1</div>
+          <h2 class="step-title">Où souhaitez-vous recevoir ces œuvres ?</h2>
+        </div>
+        
+        <div class="step-content">
+          <div class="addresses-grid">
+            <div class="address-card" *ngFor="let addr of addresses" 
+                 [class.selected]="selectedAddressId === addr.id"
+                 (click)="selectedAddressId = addr.id">
+              <div class="addr-header">
+                <mat-icon class="check-icon" *ngIf="selectedAddressId === addr.id">check_circle</mat-icon>
+                <mat-icon class="uncheck-icon" *ngIf="selectedAddressId !== addr.id">radio_button_unchecked</mat-icon>
+                <span class="badge badge-art" *ngIf="addr.isPrimary">Principale</span>
+              </div>
+              <div class="addr-body">
+                <p class="street">{{ addr.street }}</p>
+                <p class="city">{{ addr.postalCode }} {{ addr.city }}</p>
+                <p class="country">{{ addr.country }}</p>
+              </div>
+            </div>
+
+            <div class="address-card add-new" (click)="openAddressDialog()">
+              <mat-icon>add</mat-icon>
+              <span>Saisir une nouvelle adresse</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 2 : Paiement -->
+      <div class="checkout-step-card">
+        <div class="step-header">
+          <div class="step-number-badge">2</div>
+          <h2 class="step-title">Mode de règlement</h2>
+        </div>
+        
+        <div class="step-content">
+          <mat-radio-group [(ngModel)]="paymentMethod" class="payment-methods-grid">
+            
+            <label class="payment-method-card" [class.selected]="paymentMethod === 'CASH'">
+              <mat-radio-button value="CASH" class="hidden-radio"></mat-radio-button>
+              <div class="pm-icon"><mat-icon>local_shipping</mat-icon></div>
+              <div class="pm-info">
+                <span class="pm-title">Règlement à la livraison</span>
+                <span class="pm-desc">Paiement en espèces lors de la réception de l'œuvre.</span>
+              </div>
+              <mat-icon class="pm-check" *ngIf="paymentMethod === 'CASH'">check_circle</mat-icon>
+            </label>
+            
+            <label class="payment-method-card disabled">
+              <mat-radio-button value="CARD" disabled class="hidden-radio"></mat-radio-button>
+              <div class="pm-icon"><mat-icon>credit_card</mat-icon></div>
+              <div class="pm-info">
+                <span class="pm-title">Carte Bancaire</span>
+                <span class="pm-desc">Bientôt disponible.</span>
+              </div>
+            </label>
+
+          </mat-radio-group>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Zone de droite : Résumé fixe -->
+    <div class="checkout-summary-section">
+      <div class="summary-card">
+        <h3 class="summary-title">Votre sélection</h3>
+        
+        <div class="summary-items-list">
+          <div class="summary-item" *ngFor="let item of cart.items">
+            <div class="si-info">
+              <span class="si-qty">{{ item.quantity }}x</span>
+              <span class="si-name">{{ item.productName }}</span>
+            </div>
+            <span class="si-price">{{ item.subtotal | number:'1.2-2' }} DT</span>
+          </div>
+        </div>
+        
+        <div class="summary-content">
+          <div class="summary-divider"></div>
+          
+          <div class="summary-row">
+            <span>Sous-total œuvres</span>
+            <span>{{ (cart.subtotal || 0) | number:'1.2-2' }} DT</span>
+          </div>
+          <div class="summary-row">
+            <span>Transport sécurisé</span>
+            <span>{{ (cart.shippingFee || 0) | number:'1.2-2' }} DT</span>
+          </div>
+          <div class="summary-row" *ngIf="cart.discountAmount > 0 || cart.couponCode">
+            <span>Avantage client <small *ngIf="cart.couponCode">({{ cart.couponCode }})</small></span>
+            <span class="text-success">-{{ (cart.discountAmount || 0) | number:'1.2-2' }} DT</span>
+          </div>
+          
+          <div class="summary-divider"></div>
+          
+          <div class="summary-row total">
+            <strong>Total à régler</strong>
+            <strong class="total-amount">{{ (cart.totalAmount || 0) | number:'1.2-2' }} DT</strong>
+          </div>
+
+          <button mat-raised-button class="btn-primary-art full-width btn-confirm"
+                  [disabled]="!selectedAddressId || submitting"
+                  (click)="confirmOrder()" id="btn-confirmer-commande">
+            <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
+            <span *ngIf="!submitting" style="display:flex; align-items:center; gap:8px;">
+              <mat-icon>check_circle</mat-icon> Confirmer l'acquisition
+            </span>
+          </button>
+          
+          <p class="terms-text">
+            En confirmant, vous acceptez les conditions générales de vente de la galerie ArtShop.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

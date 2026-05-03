@@ -1,0 +1,45 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Mon Profil
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="art-form-page">
+  <div class="art-form-header fade-in-up">
+    <div class="header-titles">
+      <h1>Mon Profil</h1>
+      <p class="subtitle">Vos informations personnelles et paramètres de compte.</p>
+    </div>
+  </div>
+
+  <div class="art-form-card fade-in-up" *ngIf="user" style="animation-delay: 0.1s; max-width: 600px;">
+    
+    <div style="text-align: center; margin-bottom: 32px;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(212, 175, 119, 0.15); color: var(--art-or); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <mat-icon style="font-size: 40px; width: 40px; height: 40px;">account_circle</mat-icon>
+      </div>
+      <h2 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--art-nuit);">{{ user.firstName }} {{ user.lastName }}</h2>
+      <span class="badge" [ngClass]="'badge-' + user.role.toLowerCase()" style="margin-top: 8px;">{{ user.role === 'SELLER' ? 'Artiste' : (user.role === 'CUSTOMER' ? 'Collectionneur' : 'Administrateur') }}</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;">
+      <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--art-galet);">
+        <span style="color: var(--art-text-light); font-weight: 500;">Prénom</span>
+        <span style="font-weight: 600; color: var(--art-nuit);">{{ user.firstName }}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--art-galet);">
+        <span style="color: var(--art-text-light); font-weight: 500;">Nom</span>
+        <span style="font-weight: 600; color: var(--art-nuit);">{{ user.lastName }}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--art-galet);">
+        <span style="color: var(--art-text-light); font-weight: 500;">Email</span>
+        <span style="font-weight: 600; color: var(--art-nuit);">{{ user.email }}</span>
+      </div>
+    </div>
+
+    <div class="art-form-actions" style="justify-content: center;">
+      <button mat-raised-button color="warn" (click)="onLogout()" 
+              style="background: #FFF0F0; color: #DC2626; border-radius: 16px; padding: 12px 32px; box-shadow: none;">
+        <mat-icon>logout</mat-icon> Se déconnecter
+      </button>
+    </div>
+
+  </div>
+</div>

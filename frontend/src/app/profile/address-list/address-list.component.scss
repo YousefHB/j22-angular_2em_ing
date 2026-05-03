@@ -1,0 +1,20 @@
+.addresses-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.address-item {
+  .addr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    min-height: 40px;
+  }
+  
+  .addr-body p {
+    margin: 8px 0;
+    color: var(--sf-text);
+  }
+}

@@ -1,0 +1,223 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Tableau de Bord (Galerie & Artistes)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="page-container dashboard-page">
+  <div class="dashboard-hero">
+    <div class="hero-titles">
+      <h1>{{ isAdmin ? 'Direction de la Galerie' : (isSeller ? 'Mon Espace Artiste' : 'Ma Collection') }}</h1>
+      <div class="hero-line"></div>
+      <p class="hero-subtitle">
+        {{ isAdmin ? 'Vue artistique sur les collections, acquisitions et artistes exposés.' : (isSeller ? 'Gérez vos œuvres, suivez vos acquisitions et analysez vos performances.' : 'Explorez, gérez et complétez votre collection privée d\'œuvres d\'art.') }}
+      </p>
+    </div>
+    <div class="hero-badge-container">
+      <span class="badge" [ngClass]="roleBadgeClass">{{ currentRole === 'SELLER' ? 'Artiste' : (currentRole === 'CUSTOMER' ? 'Collectionneur' : 'Administrateur') }}</span>
+    </div>
+  </div>
+
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- ════════════════════ ADMIN (Galerie) ════════════════════ -->
+  <ng-container *ngIf="!loading && isAdmin && adminData">
+    <div class="dashboard-cards">
+      <mat-card class="dashboard-card">
+        <mat-card-title>Collectionneurs</mat-card-title>
+        <mat-card-subtitle>{{ adminData.totalUsers }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Artistes Exposés</mat-card-title>
+        <mat-card-subtitle>{{ adminData.totalSellers }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Œuvres en Galerie</mat-card-title>
+        <mat-card-subtitle>{{ adminData.totalProducts }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Œuvres visibles</mat-card-title>
+        <mat-card-subtitle>{{ adminData.totalProductsActive }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Œuvres archivées</mat-card-title>
+        <mat-card-subtitle>{{ adminData.totalProductsArchived }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Acquisitions</mat-card-title>
+        <mat-card-subtitle>{{ adminData.totalOrders }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Livraisons en Cours</mat-card-title>
+        <mat-card-subtitle>{{ adminData.pendingOrders }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card ca-card">
+        <mat-card-title>Volume d'Affaires</mat-card-title>
+        <mat-card-subtitle>{{ adminData.chiffreAffairesTotal | number:'1.0-0' }} DT</mat-card-subtitle>
+      </mat-card>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="charts-grid">
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Statut des Acquisitions</h3>
+        <canvas baseChart [type]="'bar'" [datasets]="adminBarData" [labels]="adminBarLabels" [options]="chartOptions"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Répartition par Technique</h3>
+        <canvas baseChart [type]="'doughnut'" [datasets]="adminDoughnutData" [labels]="adminDoughnutLabels" [options]="chartOptions"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Avis par Artiste</h3>
+        <canvas baseChart [type]="'line'" [datasets]="adminLineData" [labels]="adminLineLabels" [options]="chartOptions"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Utilisateurs par Rôle</h3>
+        <canvas baseChart [type]="'bar'" [datasets]="adminPieData" [labels]="adminPieLabels" [options]="chartOptions"></canvas>
+      </div>
+    </div>
+
+    <section class="archived-products-panel">
+      <div class="archived-products-header">
+        <div>
+          <h2>Œuvres archivées</h2>
+          <p>{{ archivedProductsTotal }} œuvre(s) masquée(s) aux utilisateurs.</p>
+        </div>
+      </div>
+
+      <div class="archived-products-empty" *ngIf="!loadingArchivedProducts && archivedProducts.length === 0">
+        Aucune œuvre archivée pour le moment.
+      </div>
+
+      <div class="archived-products-list" *ngIf="archivedProducts.length > 0">
+        <div class="archived-product-row" *ngFor="let product of archivedProducts">
+          <img [src]="product.imageUrl || 'assets/no-image.svg'" [alt]="product.name">
+          <div class="archived-product-info">
+            <strong>{{ product.name }}</strong>
+            <span>{{ product.sellerName }} · {{ product.price | number:'1.0-0' }} DT</span>
+          </div>
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="restoreProduct(product)"
+            [disabled]="restoringProductId === product.id">
+            <mat-icon>unarchive</mat-icon>
+            Désarchiver
+          </button>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+  <!-- ════════════════════ SELLER (Artiste) ════════════════════ -->
+  <ng-container *ngIf="!loading && isSeller && sellerData">
+    <div class="dashboard-cards">
+      <mat-card class="dashboard-card">
+        <mat-card-title>Œuvres Déposées</mat-card-title>
+        <mat-card-subtitle>{{ sellerData.totalProduits }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Œuvres Exposées</mat-card-title>
+        <mat-card-subtitle>{{ sellerData.produitsActifs }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>Acquisitions</mat-card-title>
+        <mat-card-subtitle>{{ sellerData.totalCommandes }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card">
+        <mat-card-title>À Expédier</mat-card-title>
+        <mat-card-subtitle>{{ sellerData.commandesEnAttente }}</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card alert-card" *ngIf="sellerData.alertesStockFaible > 0">
+        <mat-card-title>⚠ Stock Épuisé</mat-card-title>
+        <mat-card-subtitle>{{ sellerData.alertesStockFaible }} œuvres</mat-card-subtitle>
+      </mat-card>
+
+      <mat-card class="dashboard-card ca-card">
+        <mat-card-title>Revenus</mat-card-title>
+        <mat-card-subtitle>{{ sellerData.chiffreAffaires | number:'1.0-0' }} DT</mat-card-subtitle>
+      </mat-card>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="charts-grid">
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Suivi des Expéditions</h3>
+        <canvas baseChart [type]="'bar'" [datasets]="sellerBarData" [labels]="sellerBarLabels" [options]="chartOptions"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Évolution des Revenus</h3>
+        <canvas baseChart [type]="'line'" [datasets]="sellerLineData" [labels]="sellerLineLabels" [options]="chartOptions"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Œuvres les plus acquises</h3>
+        <canvas baseChart [type]="'doughnut'" [datasets]="sellerDoughnutData" [labels]="sellerDoughnutLabels" [options]="chartOptions"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3 class="chart-title">Statistiques de Livraison</h3>
+        <canvas baseChart [type]="'pie'" [datasets]="sellerPieData" [labels]="sellerPieLabels" [options]="chartOptions"></canvas>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ════════════════════ CUSTOMER ════════════════════ -->
+  <ng-container *ngIf="!loading && isCustomer">
+    <div class="customer-welcome">
+      <mat-icon>collections</mat-icon>
+      <h2>Bienvenue dans votre espace collectionneur</h2>
+      <p>Explorez les nouvelles toiles, suivez vos acquisitions et complétez votre galerie personnelle.</p>
+      
+      <div class="dashboard-actions">
+        <button mat-raised-button class="btn-primary-art" routerLink="/produits" id="btn-explorer">
+          <mat-icon>explore</mat-icon> Parcourir la galerie
+        </button>
+      </div>
+    </div>
+
+    <!-- Section Panier Actuel (si non vide) -->
+    <div class="customer-cart-preview" *ngIf="cartData && cartData.items && cartData.items.length > 0">
+      <div class="preview-header">
+        <h3><mat-icon>shopping_cart</mat-icon> Votre sélection actuelle</h3>
+        <button mat-button class="btn-link-art" routerLink="/panier">Gérer mon panier</button>
+      </div>
+
+      <div class="preview-grid">
+        <div class="preview-item" *ngFor="let item of cartData.items.slice(0, 4)">
+          <div class="item-thumb">
+            <img [src]="item.productImage || 'assets/no-image.svg'" alt="">
+          </div>
+          <div class="item-mini-info">
+            <span class="item-name">{{ item.productName }}</span>
+            <span class="item-price">{{ item.unitPrice | number:'1.2-2' }} DT</span>
+          </div>
+        </div>
+        
+        <!-- Si plus de 4 items, montrer un indicateur -->
+        <div class="preview-more" *ngIf="cartData.items.length > 4" routerLink="/panier">
+          <span>+{{ cartData.items.length - 4 }} autres œuvres</span>
+        </div>
+      </div>
+
+      <div class="preview-footer">
+        <div class="total-line">
+          <span>Total estimé :</span>
+          <span class="total-val">{{ cartData.totalAmount | number:'1.2-2' }} DT</span>
+        </div>
+        <button mat-raised-button class="btn-gold-art" routerLink="/panier">
+          Finaliser mon acquisition <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,77 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Formulaire Code Promo
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="art-form-page">
+  <div class="art-form-header fade-in-up">
+    <div class="header-titles">
+      <h1>Nouveau Code Promo</h1>
+      <p class="subtitle">Créez des offres exclusives pour les collectionneurs et visiteurs.</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button class="btn-art-outline" routerLink="/coupons">
+        <mat-icon>arrow_back</mat-icon> Retour
+      </button>
+    </div>
+  </div>
+
+  <div class="art-form-card fade-in-up" style="animation-delay: 0.1s;">
+    <form [formGroup]="couponForm" (ngSubmit)="onSubmit()">
+
+      <h3 class="art-form-section-title">
+        <mat-icon>card_giftcard</mat-icon> Informations de l'offre
+      </h3>
+      
+      <div class="art-form-grid">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Code du Coupon (ex: SUMMER25)</mat-label>
+          <input matInput formControlName="code" style="text-transform: uppercase;">
+          <mat-error *ngIf="couponForm.get('code')?.hasError('required')">Le code est obligatoire.</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Type de Réduction</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="PERCENTAGE">Pourcentage (%)</mat-option>
+            <mat-option value="FIXED_AMOUNT">Montant Fixe (DT)</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="art-form-grid">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Valeur de la réduction</mat-label>
+          <input matInput type="number" formControlName="value">
+          <mat-error *ngIf="couponForm.get('value')?.hasError('required')">La valeur est obligatoire.</mat-error>
+          <mat-error *ngIf="couponForm.get('value')?.hasError('min')">La valeur doit être positive.</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Nombre maximum d'utilisations</mat-label>
+          <input matInput type="number" formControlName="maxUsages" placeholder="Laisser vide pour illimité">
+        </mat-form-field>
+      </div>
+
+      <div class="art-form-grid single-col">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Date d'expiration</mat-label>
+          <input matInput type="datetime-local" formControlName="expirationDate">
+          <mat-error *ngIf="couponForm.get('expirationDate')?.hasError('required')">La date d'expiration est requise.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Actions -->
+      <div class="art-form-actions">
+        <button mat-stroked-button type="button" class="btn-art-outline" routerLink="/coupons">
+          Annuler
+        </button>
+        <button mat-raised-button type="submit" class="btn-art-primary"
+                [disabled]="couponForm.invalid || submitting">
+          <mat-spinner *ngIf="submitting" diameter="20" style="margin-right: 8px; display: inline-block; vertical-align: middle;"></mat-spinner>
+          <mat-icon *ngIf="!submitting">auto_awesome</mat-icon>
+          Créer le Coupon
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

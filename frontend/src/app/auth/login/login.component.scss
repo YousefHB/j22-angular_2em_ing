@@ -1,0 +1,152 @@
+/* ═══════════════════════════════════════════════════════════════
+   Auth pages partagé — ArtShop "Toile Vivante"
+   ═══════════════════════════════════════════════════════════════ */
+.auth-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.auth-left {
+  flex: 0 0 42%;
+  background: var(--art-nuit);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 48px;
+  color: #fff;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top right, rgba(212,175,119,0.15) 0%, transparent 60%),
+                radial-gradient(circle at bottom left, rgba(156,102,68,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .auth-brand {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 64px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+
+    .brand-logo-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #D4AF77, #B8922A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(212, 175, 119, 0.4);
+      mat-icon { color: #0F1C2E; font-size: 24px; width: 24px; height: 24px; }
+    }
+  }
+
+  .auth-text-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  h2 { font-family: 'Cormorant Garamond', serif; font-size: 40px; color: #fff; margin-bottom: 16px; line-height: 1.1; }
+  p  { font-family: 'Inter', sans-serif; font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 400px; }
+}
+
+.auth-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--art-creme);
+  padding: 32px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  border-radius: 12px !important;
+  box-shadow: var(--art-shadow-lg) !important;
+  border: 1px solid var(--art-galet) !important;
+  padding: 32px 24px !important;
+  background: #fff !important;
+
+  mat-card-header { margin-bottom: 24px; }
+  mat-card-title  { font-family: 'Cormorant Garamond', serif !important; font-size: 28px !important; font-weight: 600 !important; color: var(--art-nuit) !important; margin-bottom: 8px !important; }
+  mat-card-subtitle { font-family: 'Inter', sans-serif !important; font-size: 14px !important; color: var(--art-text-light) !important; }
+}
+
+.full-width { width: 100%; margin-bottom: 16px; }
+
+.submit-btn {
+  height: 52px;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.05em;
+  background: var(--art-or) !important;
+  color: var(--art-nuit) !important;
+  transition: var(--art-transition) !important;
+
+  &:hover:not([disabled]) {
+    background: var(--art-or-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--art-shadow-or);
+  }
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #991B1B;
+  font-size: 13px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #FEE2E2;
+  border: 1px solid #FCA5A5;
+  border-radius: 8px;
+}
+
+mat-card-actions {
+  padding: 24px 0 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--art-galet);
+  margin-top: 24px;
+}
+
+.auth-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--art-text-light);
+  text-align: center;
+  margin: 0;
+  
+  a { 
+    color: var(--art-sienne); 
+    font-weight: 600; 
+    text-decoration: none; 
+    transition: var(--art-transition);
+    &:hover { color: var(--art-or-dark); text-decoration: underline; } 
+  }
+}
+
+@media (max-width: 900px) {
+  .auth-left { display: none; }
+  .auth-right { padding: 16px; }
+  .auth-card { padding: 24px 16px !important; }
+}

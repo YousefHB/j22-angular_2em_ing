@@ -1,0 +1,165 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Fiche Œuvre "Toile Vivante"
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="page-container detail-page" *ngIf="product">
+  <div class="page-header">
+    <button mat-stroked-button routerLink="/produits" id="btn-retour" class="btn-outline-art btn-back">
+      <mat-icon>arrow_back</mat-icon> Retour à la galerie
+    </button>
+  </div>
+
+  <div class="artwork-detail-grid">
+    <!-- Image de l'œuvre -->
+    <div class="artwork-image-container">
+      <div class="artwork-frame">
+        <img [src]="product.imageUrl || 'assets/no-image.svg'" 
+             [alt]="product.name" 
+             onerror="this.src='assets/no-image.svg'"
+             class="artwork-full-image">
+      </div>
+    </div>
+
+    <!-- Informations -->
+    <div class="artwork-info-container">
+      <div class="info-header">
+        <h1 class="artwork-title">{{ product.name }}</h1>
+        <p class="artwork-artist">
+          <mat-icon>brush</mat-icon> {{ product.sellerName }}
+        </p>
+      </div>
+
+      <div class="info-meta">
+        <span class="meta-item">{{ product.technique || 'Peinture originale' }}</span>
+        <span class="meta-dot">•</span>
+        <span class="meta-item">{{ product.dimensions || 'Dimensions non spécifiées' }}</span>
+      </div>
+
+      <p class="artwork-description">{{ product.description }}</p>
+
+      <div class="info-divider"></div>
+
+      <div class="info-status">
+        <div class="status-row">
+          <span class="status-label">Disponibilité</span>
+          <span class="status-value" [class.text-warn]="product.stock < 5">
+            {{ product.stock > 0 ? product.stock + ' en stock' : 'Épuisé' }}
+          </span>
+        </div>
+        
+        <div class="status-row" *ngIf="product.rating">
+          <span class="status-label">Avis</span>
+          <span class="status-value rating-value">
+            <mat-icon class="star-icon">star</mat-icon> 
+            {{ product.rating | number:'1.1-1' }} ({{ product.reviewCount }} avis)
+          </span>
+        </div>
+      </div>
+
+      <div class="info-pricing">
+        <div class="price-block" *ngIf="!product.promotionalPrice">
+          <span class="price-label">Prix d'acquisition</span>
+          <span class="price-value">{{ product.price | number:'1.2-2' }} DT</span>
+        </div>
+
+        <div class="price-block promo-block" *ngIf="product.promotionalPrice">
+          <span class="price-label">Prix d'acquisition privilégié</span>
+          <div class="promo-values">
+            <span class="price-old">{{ product.price | number:'1.2-2' }} DT</span>
+            <span class="price-value">{{ product.promotionalPrice | number:'1.2-2' }} DT</span>
+            <span class="badge badge-art">-{{ product.discountPercentage }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-actions" *ngIf="isCustomer">
+        <button mat-raised-button class="btn-primary-art btn-add-cart full-width" 
+                (click)="addToCart()" [disabled]="product.stock === 0" id="btn-panier">
+          <mat-icon>account_balance_wallet</mat-icon> Acquérir cette œuvre
+        </button>
+        <p class="certif-text">
+          <mat-icon>verified</mat-icon> Œuvre certifiée authentique. Livraison sécurisée.
+        </p>
+      </div>
+      
+      <div class="product-actions admin-actions" *ngIf="!isCustomer">
+        <button mat-stroked-button class="btn-outline-art full-width"
+                [routerLink]="['/produits/modifier', product.id]">
+          <mat-icon>edit</mat-icon> Modifier les informations
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section Avis (Livre d'or) ────────────────────────────────── -->
+  <div class="reviews-section">
+    <div class="section-divider-art">
+      <mat-icon class="divider-icon">auto_awesome</mat-icon>
+    </div>
+    
+    <h2 class="section-title-art">Livre d'or de <span>l'œuvre</span></h2>
+    
+    <!-- Formulaire (Client uniquement) -->
+    <div class="review-form-container" *ngIf="isCustomer">
+      <form [formGroup]="reviewForm" (ngSubmit)="submitReview()" class="art-review-form">
+        <h3 class="form-title">Partagez vos impressions</h3>
+        
+        <div class="rating-input">
+          <span class="label">Votre appréciation :</span>
+          <mat-radio-group formControlName="rating" class="art-rating-group">
+            <mat-radio-button [value]="1">1</mat-radio-button>
+            <mat-radio-button [value]="2">2</mat-radio-button>
+            <mat-radio-button [value]="3">3</mat-radio-button>
+            <mat-radio-button [value]="4">4</mat-radio-button>
+            <mat-radio-button [value]="5">5</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Vos mots sur cette œuvre...</mat-label>
+          <textarea matInput formControlName="comment" rows="4"></textarea>
+        </mat-form-field>
+
+        <div class="form-actions-right">
+          <button mat-raised-button class="btn-primary-art" type="submit" 
+                  [disabled]="reviewForm.invalid || submittingReview" id="btn-submit-review">
+            <mat-spinner *ngIf="submittingReview" diameter="20"></mat-spinner>
+            <span *ngIf="!submittingReview">Publier mon avis</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Liste des avis -->
+    <div class="reviews-list">
+      <div class="empty-state" *ngIf="reviews.length === 0">
+        <mat-icon>menu_book</mat-icon>
+        <p>Le livre d'or est encore vierge. Soyez le premier à partager votre ressenti.</p>
+      </div>
+      
+      <div class="reviews-grid" *ngIf="reviews.length > 0">
+        <div class="review-item-art" *ngFor="let rev of reviews">
+          <div class="review-header">
+            <div class="review-avatar">
+              {{ rev.customerName.charAt(0) | uppercase }}
+            </div>
+            <div class="review-meta">
+              <span class="review-author">{{ rev.customerName }}</span>
+              <span class="review-date">{{ rev.createdAt | date:'dd MMMM yyyy' }}</span>
+            </div>
+            <div class="review-stars">
+              <mat-icon *ngFor="let i of [1,2,3,4,5]" 
+                        [class.filled]="i <= rev.rating">star</mat-icon>
+            </div>
+          </div>
+          <div class="review-body">
+            <p>« {{ rev.comment }} »</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading-overlay" *ngIf="loading">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>

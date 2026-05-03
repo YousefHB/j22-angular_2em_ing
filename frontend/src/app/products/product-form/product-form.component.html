@@ -1,0 +1,142 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Formulaire Œuvre Premium
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="art-form-page">
+  <div class="art-form-header fade-in-up">
+    <div class="header-titles">
+      <h1>{{ isEdit ? 'Modifier l\'Œuvre' : 'Ajouter une Œuvre' }}</h1>
+      <p class="subtitle">{{ isEdit ? 'Renseignez les détails artistiques et commerciaux de l\'œuvre.' : 'Ajoutez une nouvelle pièce authentique à votre galerie.' }}</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button class="btn-art-outline" routerLink="/produits">
+        <mat-icon>arrow_back</mat-icon> Retour
+      </button>
+    </div>
+  </div>
+
+  <div class="art-form-card fade-in-up" style="animation-delay: 0.1s;">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+      <!-- ── Informations Principales ────────────────────────────── -->
+      <h3 class="art-form-section-title">
+        <mat-icon>info</mat-icon> Informations principales
+      </h3>
+      
+      <div class="art-form-grid">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Titre de l'œuvre</mat-label>
+          <input matInput formControlName="name" placeholder="Ex: La Nuit Étoilée">
+          <mat-error *ngIf="productForm.get('name')?.hasError('required')">Le titre de l'œuvre est obligatoire.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Quantité / Tirage disponible</mat-label>
+          <input matInput type="number" formControlName="stock" placeholder="1">
+          <mat-icon matSuffix style="color: var(--art-text-light)">inventory_2</mat-icon>
+          <mat-error *ngIf="productForm.get('stock')?.hasError('min')">La quantité ne peut être négative.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- ── Description Artistique ──────────────────────────────── -->
+      <h3 class="art-form-section-title">
+        <mat-icon>brush</mat-icon> Description artistique
+      </h3>
+
+      <div class="art-form-grid single-col">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Histoire, inspiration et détails</mat-label>
+          <textarea matInput formControlName="description" rows="5"
+                    placeholder="Décrivez l'inspiration, la technique, les matériaux utilisés, l'histoire de cette œuvre..."></textarea>
+          <mat-error *ngIf="productForm.get('description')?.hasError('required')">La description de l'œuvre est obligatoire.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- ── Prix et Promotion ───────────────────────────────────── -->
+      <h3 class="art-form-section-title">
+        <mat-icon>sell</mat-icon> Prix et promotion
+      </h3>
+
+      <div class="art-form-grid">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Prix de l'œuvre (DT)</mat-label>
+          <input matInput type="number" step="0.01" formControlName="price" placeholder="0.00">
+          <mat-icon matPrefix style="color: var(--art-or); margin-right: 8px;">payments</mat-icon>
+          <mat-error *ngIf="productForm.get('price')?.hasError('min')">Le prix doit être supérieur à 0.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Prix Promotionnel (DT) - Optionnel</mat-label>
+          <input matInput type="number" step="0.01" formControlName="promotionalPrice" placeholder="0.00">
+          <mat-icon matPrefix style="color: var(--art-sienne); margin-right: 8px;">local_offer</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- ── Visuel et Catégorie ─────────────────────────────────── -->
+      <h3 class="art-form-section-title">
+        <mat-icon>photo_camera</mat-icon> Visuel et classification
+      </h3>
+
+      <div class="art-form-grid">
+        <!-- Zone Upload -->
+        <div class="art-upload-zone" [class.has-image]="imagePreview" (click)="fileInput.click()">
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+          <input type="hidden" formControlName="imageUrl">
+          
+          <ng-container *ngIf="!imagePreview">
+            <div class="upload-content">
+              <div class="icon-circle"><mat-icon>add_photo_alternate</mat-icon></div>
+              <p class="upload-title">Image de l'œuvre</p>
+              <p class="upload-hint">JPG, PNG, WebP — taille max : 2 Mo</p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="imagePreview">
+            <div class="image-preview">
+              <img [src]="imagePreview" alt="Aperçu de l'œuvre">
+              <div class="overlay">
+                <mat-icon>cameraswitch</mat-icon> Changer l'image
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Catégorie -->
+        <div style="display: flex; flex-direction: column;">
+          <mat-form-field appearance="outline" class="art-field" style="height: 100%;">
+            <mat-label>Catégorie(s)</mat-label>
+            <mat-select formControlName="categoryIds" multiple>
+              <mat-option disabled *ngIf="categories.length === 0">Aucune catégorie disponible</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                {{ cat.name }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix style="color: var(--art-text-light); margin-right: 8px;">category</mat-icon>
+            <mat-hint *ngIf="categories.length === 0" style="color: var(--art-sienne);">
+              Veuillez créer une catégorie au préalable.
+            </mat-hint>
+            <mat-error *ngIf="productForm.get('categoryIds')?.hasError('required')">Veuillez sélectionner au moins une catégorie.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Message Erreur Global -->
+      <div class="error-message-art" *ngIf="errorMessage">
+        <mat-icon>error</mat-icon> {{ errorMessage }}
+      </div>
+
+      <!-- ── Actions ─────────────────────────────────────────────── -->
+      <div class="art-form-actions">
+        <button mat-stroked-button type="button" class="btn-art-outline" routerLink="/produits">
+          Annuler
+        </button>
+        <button mat-raised-button type="submit" class="btn-art-primary"
+                [disabled]="productForm.invalid || loading">
+          <mat-spinner *ngIf="loading" diameter="20" style="margin-right: 8px; display: inline-block; vertical-align: middle;"></mat-spinner>
+          <mat-icon *ngIf="!loading">auto_awesome</mat-icon>
+          {{ isEdit ? 'Sauvegarder les modifications' : 'Exposer l\'œuvre' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

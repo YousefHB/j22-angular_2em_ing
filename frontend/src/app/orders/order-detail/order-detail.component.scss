@@ -1,0 +1,244 @@
+/* ═══════════════════════════════════════════════════════════════
+   ArtShop — Détail Commande (SCSS)
+   ═══════════════════════════════════════════════════════════════ */
+
+// ── Page ─────────────────────────────────────────────────────────
+.ord-detail-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 40px;
+
+  @media (max-width: 900px) { padding: 24px 16px; }
+}
+
+// ── HEADER ───────────────────────────────────────────────────────
+.ord-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+  gap: 24px;
+  flex-wrap: wrap;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .btn-back {
+      background: #FFFFFF;
+      border: 1px solid var(--art-galet);
+      color: var(--art-text);
+      transition: var(--art-transition);
+
+      &:hover {
+        background: rgba(212, 175, 119, 0.1);
+        border-color: var(--art-or);
+        color: var(--art-sienne);
+        transform: translateX(-2px);
+      }
+    }
+  }
+
+  &__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--art-text-light);
+    margin-bottom: 6px;
+
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 2.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--art-nuit);
+    line-height: 1;
+    font-weight: 700;
+  }
+}
+
+// ── Badges de Statut (Repris de la liste) ───────────────────────
+.ord-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-family: 'Inter', sans-serif;
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &.badge-pending    { background: #FFF8E1; color: #92670A; .ord-badge__dot { background: #F59E0B; } }
+  &.badge-paid       { background: #E8F5E9; color: #1B5E20; .ord-badge__dot { background: #22C55E; } }
+  &.badge-processing { background: #E3F2FD; color: #0D47A1; .ord-badge__dot { background: #3B82F6; } }
+  &.badge-shipped    { background: #EDE7F6; color: #4A148C; .ord-badge__dot { background: #8B5CF6; } }
+  &.badge-delivered  { background: #CFF7E3; color: #065F46; .ord-badge__dot { background: #10B981; } }
+  &.badge-cancelled  { background: #FFE1E1; color: #991B1B; .ord-badge__dot { background: #EF4444; } }
+  &.badge-refunded   { background: #FFF3E0; color: #BF360C; .ord-badge__dot { background: #F97316; } }
+}
+
+// ── GRID CONTENU ─────────────────────────────────────────────────
+.ord-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 32px;
+  align-items: flex-start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── CARDS ────────────────────────────────────────────────────────
+.ord-detail-card {
+  background: #FFFFFF;
+  border: 1px solid var(--art-galet);
+  border-radius: 22px;
+  box-shadow: 0 4px 20px rgba(15, 28, 46, 0.04);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--art-galet), var(--art-galet));
+    transition: background 0.3s ease;
+  }
+
+  &:hover::before {
+    background: linear-gradient(90deg, var(--art-or), var(--art-sienne));
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--art-galet);
+
+    mat-icon {
+      color: var(--art-or);
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      background: rgba(212, 175, 119, 0.15);
+      border-radius: 8px;
+      padding: 6px;
+      box-sizing: content-box;
+    }
+
+    h3 {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--art-nuit);
+    }
+  }
+
+  &__hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--art-text-light);
+    margin: 0 0 20px 0;
+  }
+}
+
+// ── LISTE D'INFORMATIONS ─────────────────────────────────────────
+.ord-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ord-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+
+  &__label { color: var(--art-text-light); }
+
+  &__value {
+    color: var(--art-nuit);
+    font-weight: 500;
+
+    &.mono { font-family: monospace; font-size: 14px; background: var(--art-creme); padding: 2px 6px; border-radius: 4px; }
+    &.discount { color: #10B981; }
+    &.amount { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--art-sienne); }
+  }
+
+  &--total {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--art-galet);
+    align-items: flex-end;
+  }
+}
+
+// ── BOUTON MISE À JOUR ───────────────────────────────────────────
+.ord-update-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--art-nuit);
+  color: var(--art-or);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(15, 28, 46, 0.2);
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &:hover:not(:disabled) {
+    background: #1a2d4a;
+    box-shadow: 0 8px 24px rgba(15, 28, 46, 0.3);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: var(--art-galet);
+    color: #A09E9C;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+// ── LOADER ───────────────────────────────────────────────────────
+.ord-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 100px 0;
+
+  p { font-family: 'Inter', sans-serif; color: var(--art-text-light); font-size: 14px; margin: 0; }
+}

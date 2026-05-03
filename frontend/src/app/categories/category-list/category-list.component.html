@@ -1,0 +1,143 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Collections (Catégories) — Vue Galerie Premium
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="page-container cat-page">
+
+  <!-- ══ HEADER ═══════════════════════════════════════════════════ -->
+  <header class="cat-header fade-in-up">
+    <div class="cat-header__text">
+      <div class="cat-header__eyebrow">
+        <mat-icon>collections_bookmark</mat-icon>
+        Administration
+      </div>
+      <h1 class="cat-header__title">Collections</h1>
+      <p class="cat-header__sub">Organisez votre galerie par univers artistiques et thèmes de création.</p>
+    </div>
+
+    <div class="cat-header__actions">
+      <button class="cat-btn cat-btn--primary" routerLink="/categories/creer">
+        <mat-icon>add</mat-icon>
+        <span>Nouvelle Collection</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ TOOLBAR ══════════════════════════════════════════════════ -->
+  <div class="cat-toolbar fade-in-up" style="animation-delay:.08s">
+    <!-- Recherche -->
+    <div class="cat-search">
+      <mat-icon>search</mat-icon>
+      <input
+        type="text"
+        placeholder="Rechercher une collection..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()">
+      <button class="cat-search__clear" *ngIf="searchTerm" (click)="searchTerm=''; onSearchChange()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Stats + Tri -->
+    <div class="cat-toolbar__right">
+      <div class="cat-stat">
+        <span class="cat-stat__num">{{ filteredCategories.length }}</span>
+        <span class="cat-stat__label">{{ filteredCategories.length !== 1 ? 'collections' : 'collection' }}</span>
+      </div>
+
+      <div class="cat-sort">
+        <button class="cat-sort__btn" [matMenuTriggerFor]="sortMenu">
+          <mat-icon>tune</mat-icon> Trier
+        </button>
+        <mat-menu #sortMenu="matMenu" class="cat-menu">
+          <button mat-menu-item (click)="onSortChange('nameAsc')" [class.is-active]="sortBy==='nameAsc'">
+            <mat-icon>arrow_upward</mat-icon> Nom A → Z
+          </button>
+          <button mat-menu-item (click)="onSortChange('nameDesc')" [class.is-active]="sortBy==='nameDesc'">
+            <mat-icon>arrow_downward</mat-icon> Nom Z → A
+          </button>
+          <button mat-menu-item (click)="onSortChange('recent')" [class.is-active]="sortBy==='recent'">
+            <mat-icon>schedule</mat-icon> Plus récentes
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LOADER ════════════════════════════════════════════════════ -->
+  <div class="cat-loader" *ngIf="loading">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p>Chargement des collections…</p>
+  </div>
+
+  <!-- ══ GRID ══════════════════════════════════════════════════════ -->
+  <ng-container *ngIf="!loading">
+
+    <div class="cat-grid" *ngIf="filteredCategories.length > 0">
+      <article
+        class="cat-card fade-in-up"
+        *ngFor="let cat of filteredCategories; let i = index"
+        [style.animation-delay]="(i * 0.06) + 's'">
+
+        <!-- Accent barre colorée haut -->
+        <div class="cat-card__accent"></div>
+
+        <!-- Icône -->
+        <div class="cat-card__icon">
+          <mat-icon>folder_special</mat-icon>
+        </div>
+
+        <!-- Contenu -->
+        <div class="cat-card__body">
+          <h3 class="cat-card__name">{{ cat.name }}</h3>
+          <p class="cat-card__desc">
+            {{ cat.description || 'Aucune description pour cette collection.' }}
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="cat-card__footer">
+          <button
+            class="cat-btn cat-btn--edit"
+            [routerLink]="['/categories/modifier', cat.id]"
+            matTooltip="Modifier la collection">
+            <mat-icon>edit</mat-icon>
+            <span>Modifier</span>
+          </button>
+
+          <button
+            class="cat-btn cat-btn--delete"
+            (click)="onDelete(cat)"
+            matTooltip="Supprimer la collection">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </footer>
+
+      </article>
+    </div>
+
+    <!-- ══ EMPTY STATE ══════════════════════════════════════════════ -->
+    <div class="cat-empty fade-in-up" *ngIf="filteredCategories.length === 0">
+      <div class="cat-empty__icon">
+        <mat-icon>auto_awesome</mat-icon>
+      </div>
+      <h2 class="cat-empty__title">
+        {{ searchTerm ? 'Aucun résultat' : 'Aucune collection' }}
+      </h2>
+      <p class="cat-empty__text">
+        {{ searchTerm
+          ? 'Aucune collection ne correspond à "' + searchTerm + '".'
+          : 'Créez votre première collection pour organiser les œuvres de votre galerie.' }}
+      </p>
+      <div class="cat-empty__actions">
+        <button class="cat-btn cat-btn--outline" (click)="searchTerm=''; onSearchChange()" *ngIf="searchTerm">
+          <mat-icon>refresh</mat-icon> Réinitialiser
+        </button>
+        <button class="cat-btn cat-btn--primary" routerLink="/categories/creer">
+          <mat-icon>add</mat-icon> Nouvelle Collection
+        </button>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

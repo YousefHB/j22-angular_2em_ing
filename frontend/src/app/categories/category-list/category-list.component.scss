@@ -1,0 +1,452 @@
+/* ═══════════════════════════════════════════════════════════════
+   ArtShop — Collections (Catégories) SCSS
+   ═══════════════════════════════════════════════════════════════ */
+
+// ── Page ─────────────────────────────────────────────────────────
+.cat-page {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 48px 40px;
+
+  @media (max-width: 900px) { padding: 24px 16px; }
+}
+
+// ── HEADER ───────────────────────────────────────────────────────
+.cat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  gap: 24px;
+  flex-wrap: wrap;
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--art-or);
+    margin-bottom: 12px;
+
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  }
+
+  &__title {
+    margin: 0 0 8px 0;
+    font-size: 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--art-nuit);
+    line-height: 1;
+
+    // Ligne dorée décorative
+    &::after {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--art-or), var(--art-sienne));
+      border-radius: 2px;
+      margin-top: 14px;
+    }
+  }
+
+  &__sub {
+    margin: 4px 0 0 0;
+    color: var(--art-text-light);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+}
+
+// ── BOUTONS ──────────────────────────────────────────────────────
+.cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 14px;
+  outline: none;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; }
+
+  // ── Bouton Principal : Doré ─────────────────────
+  &--primary {
+    background: var(--art-or);
+    color: var(--art-nuit);
+    padding: 13px 24px;
+    box-shadow: 0 4px 16px rgba(212, 175, 119, 0.35);
+    letter-spacing: 0.04em;
+
+    &:hover {
+      background: var(--art-or-dark);
+      box-shadow: 0 8px 28px rgba(212, 175, 119, 0.5);
+      transform: translateY(-2px);
+    }
+    &:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(212, 175, 119, 0.3); }
+    &:focus-visible { outline: 2px solid var(--art-or); outline-offset: 3px; }
+  }
+
+  // ── Bouton Secondaire : Outline ─────────────────
+  &--outline {
+    background: transparent;
+    color: var(--art-nuit);
+    padding: 12px 22px;
+    border: 1.5px solid var(--art-or);
+
+    &:hover {
+      background: rgba(212, 175, 119, 0.1);
+      border-color: var(--art-or-dark);
+    }
+    &:focus-visible { outline: 2px solid var(--art-or); outline-offset: 3px; }
+  }
+
+  // ── Bouton Modifier : Doré outline compact ──────
+  &--edit {
+    background: transparent;
+    color: var(--art-sienne);
+    padding: 9px 18px;
+    border: 1.5px solid var(--art-galet);
+    font-size: 13px;
+    border-radius: 10px;
+
+    mat-icon { color: var(--art-or); font-size: 16px; width: 16px; height: 16px; }
+
+    &:hover {
+      background: rgba(212, 175, 119, 0.12);
+      border-color: var(--art-or);
+      color: var(--art-sienne);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(212, 175, 119, 0.2);
+    }
+    &:focus-visible { outline: 2px solid var(--art-or); outline-offset: 2px; }
+  }
+
+  // ── Bouton Supprimer : Rouge doux icon only ─────
+  &--delete {
+    background: transparent;
+    color: #C0392B;
+    padding: 9px;
+    border: 1.5px solid #FFE1E1;
+    border-radius: 10px;
+    min-width: 42px;
+    justify-content: center;
+
+    mat-icon { color: #C0392B; }
+
+    &:hover {
+      background: #FFE1E1;
+      border-color: #E74C3C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    }
+    &:focus-visible { outline: 2px solid #E74C3C; outline-offset: 2px; }
+  }
+}
+
+// ── TOOLBAR ──────────────────────────────────────────────────────
+.cat-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  padding: 16px 20px;
+  background: #FFFFFF;
+  border: 1px solid var(--art-galet);
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(15, 28, 46, 0.06);
+
+  &__right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+.cat-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 200px;
+
+  mat-icon:first-child { color: var(--art-or); flex-shrink: 0; }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--art-text);
+
+    &::placeholder { color: #B0A89E; }
+  }
+
+  &__clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    color: var(--art-text-light);
+    display: flex;
+    transition: all 0.2s;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+    &:hover { background: rgba(0,0,0,0.06); color: var(--art-text); }
+  }
+}
+
+.cat-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 6px 14px;
+  background: var(--art-creme);
+  border-radius: 99px;
+  border: 1px solid var(--art-galet);
+
+  &__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--art-nuit);
+    line-height: 1;
+  }
+
+  &__label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--art-text-light);
+  }
+}
+
+.cat-sort {
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--art-galet);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--art-text);
+    cursor: pointer;
+    transition: all 0.2s;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; color: var(--art-or); }
+
+    &:hover { background: rgba(212,175,119,0.08); border-color: var(--art-or); }
+  }
+}
+
+// ── GRID ─────────────────────────────────────────────────────────
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+// ── CARD ─────────────────────────────────────────────────────────
+.cat-card {
+  background: #FFFFFF;
+  border: 1px solid var(--art-galet);
+  border-radius: 22px;
+  box-shadow: 0 2px 12px rgba(15, 28, 46, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &__accent {
+    height: 4px;
+    background: linear-gradient(90deg, var(--art-galet), var(--art-galet));
+    transition: background 0.35s ease;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(212, 175, 119, 0.22);
+    border-color: rgba(212, 175, 119, 0.5);
+
+    .cat-card__accent {
+      background: linear-gradient(90deg, var(--art-or), var(--art-sienne));
+    }
+    .cat-card__icon { background: var(--art-or); color: #fff; }
+  }
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(212, 175, 119, 0.12);
+    color: var(--art-or);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 24px 0;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+
+    mat-icon { font-size: 28px; width: 28px; height: 28px; }
+  }
+
+  &__body {
+    flex: 1;
+    padding: 16px 24px 20px;
+  }
+
+  &__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--art-nuit);
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    line-height: 1.2;
+    // Tronquer à 2 lignes
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    color: var(--art-text-light);
+    line-height: 1.55;
+    margin: 0;
+    // Tronquer à 3 lignes
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-top: 1px solid var(--art-galet);
+    background: rgba(250, 246, 240, 0.4);
+  }
+}
+
+// ── LOADER ───────────────────────────────────────────────────────
+.cat-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 80px 0;
+
+  p {
+    font-family: 'Inter', sans-serif;
+    color: var(--art-text-light);
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+// ── EMPTY STATE ──────────────────────────────────────────────────
+.cat-empty {
+  max-width: 480px;
+  margin: 72px auto;
+  text-align: center;
+  background: #FFFFFF;
+  padding: 56px 40px;
+  border-radius: 28px;
+  border: 2px dashed rgba(212, 175, 119, 0.5);
+  box-shadow: 0 4px 32px rgba(212, 175, 119, 0.08);
+
+  &__icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212,175,119,0.15), rgba(212,175,119,0.05));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    border: 1px solid rgba(212, 175, 119, 0.2);
+
+    mat-icon {
+      font-size: 42px;
+      width: 42px;
+      height: 42px;
+      color: var(--art-or);
+    }
+  }
+
+  &__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--art-nuit);
+    margin: 0 0 12px 0;
+  }
+
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    color: var(--art-text-light);
+    line-height: 1.6;
+    margin: 0 0 36px 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+// ── Menu Tri ─────────────────────────────────────────────────────
+::ng-deep .cat-menu {
+  .mat-mdc-menu-panel {
+    border-radius: 16px !important;
+    box-shadow: 0 12px 40px rgba(15,28,46,0.12) !important;
+    border: 1px solid var(--art-galet) !important;
+    overflow: hidden;
+  }
+
+  .mat-mdc-menu-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--art-text);
+
+    mat-icon { color: var(--art-text-light); margin-right: 10px; }
+
+    &.is-active {
+      background: rgba(212,175,119,0.1);
+      color: var(--art-sienne);
+      font-weight: 600;
+      mat-icon { color: var(--art-or); }
+    }
+    &:hover:not(.is-active) { background: rgba(250,246,240,0.9); }
+  }
+}

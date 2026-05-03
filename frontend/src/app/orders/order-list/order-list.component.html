@@ -1,0 +1,136 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Liste des Commandes Premium
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="page-container ord-page">
+
+  <!-- ══ HEADER ═══════════════════════════════════════════════════ -->
+  <header class="ord-header fade-in-up">
+    <div class="ord-header__text">
+      <div class="ord-header__eyebrow">
+        <mat-icon>receipt_long</mat-icon> Gestion
+      </div>
+      <h1 class="ord-header__title">Commandes</h1>
+      <p class="ord-header__sub">Suivez et gérez l'ensemble des acquisitions de votre galerie.</p>
+    </div>
+
+    <!-- Stats rapides -->
+    <div class="ord-stats" *ngIf="!loading">
+      <div class="ord-stat-chip">
+        <span class="ord-stat-chip__num">{{ totalElements }}</span>
+        <span class="ord-stat-chip__label">Total commandes</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ LOADER ════════════════════════════════════════════════════ -->
+  <div class="ord-loader" *ngIf="loading">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p>Chargement des commandes…</p>
+  </div>
+
+  <!-- ══ TABLEAU PREMIUM ══════════════════════════════════════════ -->
+  <ng-container *ngIf="!loading">
+
+    <!-- Tableau stylisé -->
+    <div class="ord-table-wrapper fade-in-up" *ngIf="orders.length > 0" style="animation-delay:.08s">
+      <table class="ord-table">
+        <thead>
+          <tr>
+            <th class="col-num">N° Commande</th>
+            <th class="col-person">Utilisateur</th>
+            <th class="col-artist">Artiste</th>
+            <th class="col-status">Statut</th>
+            <th class="col-total">Montant</th>
+            <th class="col-date">Date</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ord-row" *ngFor="let o of orders; let i = index"
+              [style.animation-delay]="(i * 0.04) + 's'"
+              [class.is-cancelled]="o.status === 'CANCELLED'">
+
+            <!-- N° Commande -->
+            <td class="col-num">
+              <div class="ord-num">
+                <div class="ord-num__icon"><mat-icon>confirmation_number</mat-icon></div>
+                <span class="ord-num__text">{{ o.orderNumber }}</span>
+              </div>
+            </td>
+
+            <!-- Utilisateur -->
+            <td class="col-person">
+              <div class="ord-person">
+                <mat-icon>person</mat-icon>
+                <span>{{ o.customerName || 'Utilisateur non renseigné' }}</span>
+              </div>
+            </td>
+
+            <!-- Artiste propriétaire -->
+            <td class="col-artist">
+              <div class="ord-person">
+                <mat-icon>brush</mat-icon>
+                <span>{{ getOrderArtists(o) }}</span>
+              </div>
+            </td>
+
+            <!-- Statut -->
+            <td class="col-status">
+              <span class="ord-badge" [ngClass]="getStatusClass(o.status)">
+                <span class="ord-badge__dot"></span>
+                {{ getStatusLabel(o.status) }}
+              </span>
+            </td>
+
+            <!-- Montant -->
+            <td class="col-total">
+              <span class="ord-amount">{{ o.totalAmount | number:'1.2-2' }} <small>DT</small></span>
+            </td>
+
+            <!-- Date -->
+            <td class="col-date">
+              <span class="ord-date">{{ o.createdAt | date:'dd MMM yyyy' }}</span>
+              <span class="ord-time">{{ o.createdAt | date:'HH:mm' }}</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="col-actions">
+              <div class="ord-actions">
+                <button class="ord-btn ord-btn--view" [routerLink]="['/commandes', o.id]" matTooltip="Voir les détails">
+                  <mat-icon>visibility</mat-icon>
+                  <span>Détails</span>
+                </button>
+                <button class="ord-btn ord-btn--cancel"
+                        *ngIf="o.status === 'PENDING'"
+                        (click)="onCancel(o)" matTooltip="Annuler la commande">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══ PAGINATION ═══════════════════════════════════════════════ -->
+    <div class="ord-paginator-wrapper" *ngIf="orders.length > 0">
+      <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        [length]="totalElements"
+        (page)="onPageChange($event)"
+        showFirstLastButtons
+        class="art-paginator">
+      </mat-paginator>
+    </div>
+
+    <!-- ══ EMPTY STATE ════════════════════════════════════════════════ -->
+    <div class="ord-empty fade-in-up" *ngIf="orders.length === 0">
+      <div class="ord-empty__icon"><mat-icon>receipt_long</mat-icon></div>
+      <h2 class="ord-empty__title">Aucune commande</h2>
+      <p class="ord-empty__text">Les acquisitions de votre galerie apparaîtront ici dès qu'une commande sera passée.</p>
+    </div>
+
+  </ng-container>
+</div>

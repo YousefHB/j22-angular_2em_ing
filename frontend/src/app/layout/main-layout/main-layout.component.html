@@ -1,0 +1,98 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Layout Horizontal Premium "Toile Vivante"
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ── Navigation Supérieure (Navbar Horizontale) ───────────────── -->
+<header class="art-navbar" role="banner">
+  <div class="navbar-container">
+    
+    <!-- Logo & Marque (Gauche) -->
+    <a class="nav-brand" routerLink="/" aria-label="ArtShop - Accueil">
+      <div class="brand-logo-icon">
+        <mat-icon>palette</mat-icon>
+      </div>
+      <span class="brand-name">ArtShop</span>
+    </a>
+
+    <!-- Liens de navigation (Centre) -->
+    <nav class="nav-links" [class.mobile-open]="mobileMenuOpen" aria-label="Navigation principale">
+      
+      <a class="nav-link" routerLink="/tableau-de-bord" routerLinkActive="active-link" *ngIf="isAdmin" (click)="closeMobileMenu()">
+        Tableau de bord
+      </a>
+      
+      <a class="nav-link" routerLink="/produits" routerLinkActive="active-link" (click)="closeMobileMenu()">
+        Œuvres
+      </a>
+      
+      <a class="nav-link" routerLink="/categories" routerLinkActive="active-link" *ngIf="isAdmin" (click)="closeMobileMenu()">
+        Catégories
+      </a>
+      
+      <a class="nav-link" routerLink="/commandes" routerLinkActive="active-link" (click)="closeMobileMenu()">
+        Commandes
+      </a>
+      
+      <a class="nav-link" routerLink="/admin/utilisateurs" routerLinkActive="active-link" *ngIf="isAdmin" (click)="closeMobileMenu()">
+        Utilisateurs
+      </a>
+      
+      <a class="nav-link" routerLink="/coupons" routerLinkActive="active-link" *ngIf="isAdmin" (click)="closeMobileMenu()">
+        Coupons
+      </a>
+      
+      <a class="nav-link" routerLink="/profil" routerLinkActive="active-link" (click)="closeMobileMenu()">
+        Mon Profil
+      </a>
+
+    </nav>
+
+    <!-- Zone Utilisateur (Droite) -->
+    <div class="nav-user-area">
+      
+      <!-- Bouton Panier (Uniquement pour les clients) -->
+      <button mat-icon-button class="nav-cart-btn" routerLink="/panier" *ngIf="isCustomer"
+              matTooltip="Voir mon panier" [matBadge]="cartItemCount > 0 ? cartItemCount : null" 
+              matBadgeColor="warn" id="btn-panier-nav">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+
+      <!-- Badge de rôle (visible sur desktop) -->
+      <span class="role-badge" [ngClass]="roleBadgeClass">{{ userRole }}</span>
+
+      <!-- Menu déroulant utilisateur -->
+      <button mat-icon-button class="user-avatar-btn" [matMenuTriggerFor]="userMenu" aria-label="Menu utilisateur">
+        <div class="avatar-circle">
+          {{ userName ? userName.charAt(0).toUpperCase() : 'U' }}
+        </div>
+      </button>
+      
+      <mat-menu #userMenu="matMenu" class="art-user-menu">
+        <div class="user-menu-header">
+          <strong>{{ userName }}</strong>
+          <span>{{ userEmail }}</span>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profil">
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
+        </button>
+        <button mat-menu-item (click)="onLogout()" class="text-warn">
+          <mat-icon>logout</mat-icon>
+          <span>Déconnexion</span>
+        </button>
+      </mat-menu>
+
+      <!-- Bouton Burger (Mobile uniquement) -->
+      <button mat-icon-button class="mobile-burger-btn" (click)="toggleMobileMenu()" aria-label="Menu mobile">
+        <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ── Contenu Principal de la page ─────────────────────────────── -->
+<main class="main-content" role="main">
+  <router-outlet></router-outlet>
+</main>

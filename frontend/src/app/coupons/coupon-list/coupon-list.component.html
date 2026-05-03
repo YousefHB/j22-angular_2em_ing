@@ -1,0 +1,64 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Liste des Codes Promo</h1>
+    <button mat-raised-button color="primary" routerLink="/coupons/creer" id="btn-creer-coupon-list">
+      <mat-icon>add</mat-icon> Nouveau Coupon
+    </button>
+  </div>
+
+  <mat-card class="mat-elevation-z2">
+    <div class="loading-overlay" *ngIf="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <table mat-table [dataSource]="coupons" *ngIf="!loading" class="full-width">
+      
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef> Code </th>
+        <td mat-cell *matCellDef="let c"> <strong>{{c.code}}</strong> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let c"> {{c.type === 'PERCENTAGE' ? 'Pourcentage' : 'Montant Fixe'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef> Valeur </th>
+        <td mat-cell *matCellDef="let c"> {{c.value}} {{c.type === 'PERCENTAGE' ? '%' : 'DT'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="maxUsages">
+        <th mat-header-cell *matHeaderCellDef> Max Util. </th>
+        <td mat-cell *matCellDef="let c"> {{c.maxUsages || '∞'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currentUsages">
+        <th mat-header-cell *matHeaderCellDef> Utilisation </th>
+        <td mat-cell *matCellDef="let c"> {{c.currentUsages}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expirationDate">
+        <th mat-header-cell *matHeaderCellDef> Expiration </th>
+        <td mat-cell *matCellDef="let c"> {{c.expirationDate | date:'dd/MM/yyyy HH:mm'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Statut </th>
+        <td mat-cell *matCellDef="let c">
+          <span class="badge" [ngClass]="c.valid ? 'badge-active' : 'badge-inactive'">
+            {{c.valid ? 'Valide' : 'Inactif/Expiré'}}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="empty-state" *ngIf="!loading && coupons.length === 0">
+      <mat-icon>confirmation_number</mat-icon>
+      <p>Aucun coupon trouvé</p>
+    </div>
+  </mat-card>
+</div>

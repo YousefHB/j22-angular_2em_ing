@@ -1,0 +1,147 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Page Vitrine "Toile Vivante"
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ── Barre de navigation ──────────────────────────────────────── -->
+<nav class="landing-nav" role="navigation" aria-label="Navigation principale">
+  <a class="nav-brand" routerLink="/" aria-label="ArtShop - Accueil">
+    <div class="brand-logo-nav">
+      <mat-icon>palette</mat-icon>
+    </div>
+    <span class="nav-brand-text">ArtShop</span>
+  </a>
+
+  <div class="nav-links" [class.nav-open]="mobileMenuOpen">
+    <!-- Liens supprimés pour simplification -->
+  </div>
+
+  <div class="nav-actions">
+    <button mat-button routerLink="/connexion" id="btn-connexion" class="nav-btn-login">
+      Se Connecter
+    </button>
+    <button mat-raised-button routerLink="/inscription" id="btn-inscription" class="nav-btn-register">
+      Rejoindre la Galerie
+    </button>
+    <button mat-icon-button class="nav-burger" (click)="mobileMenuOpen = !mobileMenuOpen"
+            aria-label="Menu mobile">
+      <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Hero Section ─────────────────────────────────────────────── -->
+<section class="hero-section" aria-labelledby="hero-title">
+  <div class="hero-overlay"></div>
+
+  <!-- Éléments décoratifs -->
+  <div class="hero-deco hero-deco-1"></div>
+  <div class="hero-deco hero-deco-2"></div>
+  <div class="hero-deco hero-deco-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge" role="note">
+      <mat-icon aria-hidden="true">brush</mat-icon>
+      <span>Galerie d'Art Contemporaine en Ligne</span>
+    </div>
+
+    <h1 class="hero-title" id="hero-title">
+      L'art qui<br>
+      <span class="hero-title-accent">vous choisit</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Découvrez des peintures uniques et rencontrez les artistes qui les créent.<br>
+      Chaque œuvre raconte une histoire qui n'attend que vous.
+    </p>
+
+    <div class="hero-cta">
+      <button mat-raised-button routerLink="/connexion"
+              id="hero-cta-boutique" class="cta-primary">
+        <mat-icon>explore</mat-icon>
+        Explorer la Boutique
+      </button>
+      <button mat-stroked-button routerLink="/inscription"
+              id="hero-cta-artistes" class="cta-secondary">
+        <mat-icon>brush</mat-icon>
+        Rencontrer les Artistes
+      </button>
+    </div>
+
+    <!-- Stats flottantes -->
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-number">+1 200</span>
+        <span class="stat-label">Œuvres originales</span>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <span class="stat-number">+350</span>
+        <span class="stat-label">Artistes représentés</span>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <span class="stat-number">+80</span>
+        <span class="stat-label">Expositions par an</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cadres décoratifs flottants -->
+  <div class="hero-visual" aria-hidden="true">
+  <div class="frame-stack">
+
+    <div class="art-frame frame-1">
+      <div class="frame-inner">
+        <img src="assets/images/a.jpg" alt="Abstraction #12">
+      </div>
+      <div class="frame-label">Abstraction #12</div>
+    </div>
+
+    <div class="art-frame frame-2">
+      <div class="frame-inner">
+        <img src="assets/images/b.jpg" alt="Horizon Bleu">
+      </div>
+      <div class="frame-label">Horizon Bleu</div>
+    </div>
+
+    <div class="art-frame frame-3">
+      <div class="frame-inner">
+        <img src="assets/images/c.jpg" alt="Terre et Ciel">
+      </div>
+      <div class="frame-label">Terre et Ciel</div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ── CTA Final ─────────────────────────────────────────────────── -->
+<section class="cta-final-section" aria-labelledby="cta-title">
+  <div class="cta-deco" aria-hidden="true"></div>
+  <div class="container-art cta-content">
+    <p class="section-eyebrow cta-eyebrow">Rejoignez ArtShop aujourd'hui</p>
+    <h2 id="cta-title">Prêt à vivre l'expérience<br><em>Toile Vivante</em> ?</h2>
+    <p>Créez votre compte gratuitement et entrez dans une galerie d'art qui vous ressemble.</p>
+    <div class="cta-actions">
+      <button mat-raised-button routerLink="/inscription"
+              id="cta-footer-inscription" class="cta-primary">
+        <mat-icon>palette</mat-icon>
+        Créer mon compte
+      </button>
+      <button mat-stroked-button routerLink="/connexion"
+              id="cta-footer-connexion" class="cta-secondary">
+        J'ai déjà un compte
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────────────────── -->
+<footer class="landing-footer" role="contentinfo">
+  <div class="footer-brand">
+    <mat-icon aria-hidden="true">palette</mat-icon>
+    <span>ArtShop</span>
+  </div>
+  <p class="footer-tagline">Toile Vivante — L'art qui vous choisit</p>
+  <span class="footer-copy">© 2026 ArtShop — Galerie d'Art Contemporaine en Ligne</span>
+</footer>

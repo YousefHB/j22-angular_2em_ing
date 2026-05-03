@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier l\'adresse' : 'Nouvelle adresse' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="addressForm" id="form-adresse">
+    <mat-form-field appearance="outline" class="full-width" style="margin-top: 8px;">
+      <mat-label>Rue</mat-label>
+      <input matInput formControlName="street" id="input-rue">
+      <mat-error *ngIf="addressForm.get('street')?.hasError('required')">Requise</mat-error>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code Postal</mat-label>
+        <input matInput formControlName="postalCode" id="input-cp">
+        <mat-error *ngIf="addressForm.get('postalCode')?.hasError('required')">Requis</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ville</mat-label>
+        <input matInput formControlName="city" id="input-ville">
+        <mat-error *ngIf="addressForm.get('city')?.hasError('required')">Requise</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pays</mat-label>
+      <input matInput formControlName="country" id="input-pays">
+      <mat-error *ngIf="addressForm.get('country')?.hasError('required')">Requis</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isPrimary" color="primary">
+      Définir comme adresse principale
+    </mat-checkbox>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" id="btn-annuler-adresse">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSave()" 
+          [disabled]="addressForm.invalid || loading" id="btn-enregistrer-adresse">
+    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+    <span *ngIf="!loading">Enregistrer</span>
+  </button>
+</mat-dialog-actions>

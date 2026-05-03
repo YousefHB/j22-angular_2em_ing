@@ -1,0 +1,254 @@
+/* ═══════════════════════════════════════════════════════════════
+   ArtShop — Fiche Œuvre (SCSS)
+   ═══════════════════════════════════════════════════════════════ */
+
+.detail-page {
+  max-width: 1200px;
+}
+
+.page-header {
+  margin-bottom: 40px;
+  .btn-back { height: 42px; border-color: var(--art-galet) !important; }
+}
+
+/* ── Layout Fiche Œuvre ──────────────────────────────────────────── */
+.artwork-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin-bottom: 80px;
+  align-items: flex-start;
+}
+
+.artwork-image-container {
+  position: sticky;
+  top: 100px;
+}
+
+.artwork-frame {
+  background: var(--art-blanc);
+  padding: 24px;
+  border-radius: 4px;
+  box-shadow: 0 24px 48px rgba(15, 28, 46, 0.15);
+  border: 1px solid var(--art-galet);
+}
+
+.artwork-full-image {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 2px;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+  background: var(--art-creme);
+}
+
+.artwork-info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-header {
+  margin-bottom: 24px;
+
+  .artwork-title {
+    font-size: 3.2rem;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    &::after { display: none; } /* Override du default */
+  }
+
+  .artwork-artist {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: var(--art-nuit);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    mat-icon { color: var(--art-sienne); }
+  }
+}
+
+.info-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--art-text-light);
+  margin-bottom: 32px;
+
+  .meta-dot { color: var(--art-or); }
+}
+
+.artwork-description {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--art-text);
+  margin-bottom: 40px;
+  white-space: pre-line;
+}
+
+.info-divider {
+  height: 1px;
+  background: var(--art-galet);
+  margin-bottom: 40px;
+}
+
+.info-status {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+
+    .status-label { color: var(--art-text-light); }
+    .status-value { font-weight: 500; color: var(--art-nuit); }
+    
+    .rating-value {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      .star-icon { color: var(--art-or); font-size: 18px; width: 18px; height: 18px; }
+    }
+  }
+}
+
+.info-pricing {
+  margin-bottom: 40px;
+  padding: 32px;
+  background: rgba(212, 175, 119, 0.05);
+  border-radius: var(--art-radius-md);
+  border: 1px solid rgba(212, 175, 119, 0.2);
+
+  .price-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .price-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--art-sienne); font-weight: 600; }
+    .price-value { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--art-nuit); line-height: 1; }
+  }
+
+  .promo-block {
+    .promo-values {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .price-old { font-size: 1.5rem; text-decoration: line-through; color: var(--art-text-light); }
+  }
+}
+
+.product-actions {
+  .btn-add-cart { height: 60px; font-size: 18px; }
+  .certif-text {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--art-text-light);
+    mat-icon { font-size: 16px; width: 16px; height: 16px; color: var(--art-success); }
+  }
+}
+
+/* ── Section Avis (Livre d'or) ──────────────────────────────────── */
+.reviews-section {
+  padding-top: 40px;
+}
+
+.review-form-container {
+  background: #fff;
+  padding: 40px;
+  border-radius: var(--art-radius-md);
+  box-shadow: var(--art-shadow-card);
+  border: 1px solid var(--art-galet);
+  margin-bottom: 48px;
+
+  .form-title { font-family: 'Inter', sans-serif; font-size: 18px; margin-bottom: 24px; color: var(--art-nuit); }
+}
+
+.rating-input {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  
+  .label { font-size: 15px; color: var(--art-text); font-weight: 500; }
+}
+
+.form-actions-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.review-item-art {
+  background: transparent;
+  border-bottom: 1px solid var(--art-galet);
+  padding: 32px 0;
+
+  .review-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .review-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--art-nuit);
+    color: var(--art-or);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .review-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .review-author { font-weight: 600; color: var(--art-nuit); font-size: 16px; }
+    .review-date { font-size: 13px; color: var(--art-text-light); }
+  }
+
+  .review-stars {
+    display: flex;
+    mat-icon { color: var(--art-galet); font-size: 20px; width: 20px; height: 20px; &.filled { color: var(--art-or); } }
+  }
+
+  .review-body {
+    p { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-style: italic; color: var(--art-text); line-height: 1.55; margin: 0; }
+  }
+}
+
+@media (max-width: 900px) {
+  .artwork-detail-grid { grid-template-columns: 1fr; gap: 40px; }
+  .artwork-image-container { position: relative; top: 0; }
+  .info-header .artwork-title { font-size: 2.4rem; }
+  .info-pricing .price-block .price-value { font-size: 2.2rem; }
+}

@@ -1,0 +1,246 @@
+/* ═══════════════════════════════════════════════════════════════
+   ArtShop — Dashboard (SCSS)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* L'essentiel du style des cartes et graphiques est géré dans styles.scss */
+
+.customer-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  gap: 16px;
+  background: var(--art-blanc);
+  border: 1px solid var(--art-galet);
+  border-radius: var(--art-radius-lg);
+  padding: 64px 24px;
+  box-shadow: var(--art-shadow-md);
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: var(--art-or);
+    margin-bottom: 16px;
+  }
+
+  h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: var(--art-nuit); margin: 0; }
+  p  { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--art-text-light); max-width: 500px; margin-bottom: 24px; }
+}
+
+.customer-cart-preview {
+  margin-top: 32px;
+  background: var(--art-blanc);
+  border: 1px solid var(--art-galet);
+  border-radius: var(--art-radius-lg);
+  padding: 32px;
+  box-shadow: var(--art-shadow-md);
+
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--art-galet);
+    padding-bottom: 16px;
+
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      margin: 0;
+      color: var(--art-nuit);
+      mat-icon { color: var(--art-sienne); }
+    }
+  }
+
+  .preview-grid {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+
+    .preview-item {
+      flex: 0 0 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .item-thumb {
+        width: 120px;
+        height: 120px;
+        border-radius: var(--art-radius-sm);
+        overflow: hidden;
+        border: 1px solid var(--art-galet);
+        background: var(--art-creme);
+
+        img { width: 100%; height: 100%; object-fit: cover; }
+      }
+
+      .item-mini-info {
+        display: flex;
+        flex-direction: column;
+        
+        .item-name {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--art-nuit);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .item-price {
+          font-size: 11px;
+          color: var(--art-sienne);
+        }
+      }
+    }
+
+    .preview-more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      background: var(--art-galet);
+      border-radius: var(--art-radius-sm);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--art-text);
+      transition: var(--art-transition);
+
+      &:hover {
+        background: rgba(212, 175, 119, 0.15);
+        color: var(--art-sienne);
+      }
+    }
+  }
+
+  .preview-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--art-creme);
+    padding: 16px 24px;
+    border-radius: var(--art-radius-sm);
+
+    .total-line {
+      display: flex;
+      flex-direction: column;
+      span { font-size: 13px; color: var(--art-text); }
+      .total-val { font-size: 20px; font-weight: 700; color: var(--art-nuit); }
+    }
+  }
+}
+
+.chart-wrapper {
+  position: relative; /* REQUIRED for chartjs */
+  height: 400px;      /* REQUIRED for chartjs to stop infinite resizing */
+}
+
+.archived-products-panel {
+  margin-top: 32px;
+  background: var(--art-blanc);
+  border: 1px solid var(--art-galet);
+  border-radius: var(--art-radius-lg);
+  padding: 28px;
+  box-shadow: var(--art-shadow-md);
+}
+
+.archived-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--art-galet);
+
+  h2 {
+    margin: 0;
+    color: var(--art-nuit);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: var(--art-text-light);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+}
+
+.archived-products-empty {
+  padding: 24px 0 0;
+  color: var(--art-text-light);
+  font-family: 'Inter', sans-serif;
+}
+
+.archived-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.archived-product-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--art-galet);
+  border-radius: var(--art-radius-sm);
+  background: var(--art-creme);
+
+  img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: var(--art-radius-sm);
+    background: var(--art-blanc);
+  }
+
+  button {
+    min-width: 142px;
+  }
+}
+
+.archived-product-info {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    color: var(--art-nuit);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    color: var(--art-text-light);
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 640px) {
+  .archived-product-row {
+    grid-template-columns: 56px minmax(0, 1fr);
+
+    button {
+      grid-column: 1 / -1;
+      justify-self: stretch;
+    }
+  }
+}

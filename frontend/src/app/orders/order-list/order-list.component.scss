@@ -1,0 +1,397 @@
+/* ═══════════════════════════════════════════════════════════════
+   ArtShop — Liste Commandes (SCSS)
+   ═══════════════════════════════════════════════════════════════ */
+
+// ── Page ─────────────────────────────────────────────────────────
+.ord-page {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 48px 40px;
+
+  @media (max-width: 900px) { padding: 24px 16px; }
+}
+
+// ── HEADER ───────────────────────────────────────────────────────
+.ord-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  gap: 24px;
+  flex-wrap: wrap;
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--art-or);
+    margin-bottom: 12px;
+
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  }
+
+  &__title {
+    margin: 0 0 8px 0;
+    font-size: 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--art-nuit);
+    line-height: 1;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--art-or), var(--art-sienne));
+      border-radius: 2px;
+      margin-top: 14px;
+    }
+  }
+
+  &__sub {
+    margin: 4px 0 0 0;
+    color: var(--art-text-light);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+.ord-stat-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 12px 20px;
+  background: #FFFFFF;
+  border: 1px solid var(--art-galet);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(15, 28, 46, 0.06);
+
+  &__num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--art-nuit);
+    line-height: 1;
+  }
+
+  &__label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--art-text-light);
+  }
+}
+
+// ── LOADER ───────────────────────────────────────────────────────
+.ord-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 80px 0;
+
+  p { font-family: 'Inter', sans-serif; color: var(--art-text-light); font-size: 14px; margin: 0; }
+}
+
+// ── TABLE WRAPPER ─────────────────────────────────────────────────
+.ord-table-wrapper {
+  background: #FFFFFF;
+  border: 1px solid var(--art-galet);
+  border-radius: 22px;
+  overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(15, 28, 46, 0.06);
+}
+
+.ord-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+
+  // ── Header ──────────────────────────────────────────
+  thead tr {
+    background: #F8F5EF;
+    border-bottom: 2px solid var(--art-galet);
+  }
+
+  thead th {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--art-text-light);
+    white-space: nowrap;
+  }
+
+  // ── Rows ─────────────────────────────────────────────
+  tbody tr.ord-row {
+    border-bottom: 1px solid var(--art-galet);
+    transition: background 0.2s ease;
+
+    &:last-child { border-bottom: none; }
+
+    &:hover { background: rgba(212, 175, 119, 0.04); }
+    &.is-cancelled { opacity: 0.6; }
+  }
+
+  tbody td {
+    padding: 18px 20px;
+    vertical-align: middle;
+  }
+
+  // ── Colonnes ─────────────────────────────────────────
+  .col-num    { width: 20%; }
+  .col-person { width: 16%; }
+  .col-artist { width: 18%; }
+  .col-status { width: 14%; }
+  .col-total  { width: 12%; }
+  .col-date   { width: 12%; }
+  .col-actions{ width: 8%; }
+}
+
+// ── N° Commande ───────────────────────────────────────────────────
+.ord-num {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(212, 175, 119, 0.12);
+    color: var(--art-or);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon { font-size: 20px; width: 20px; height: 20px; }
+  }
+
+  &__text {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--art-nuit);
+    letter-spacing: 0.02em;
+  }
+}
+
+.ord-person {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 220px;
+  gap: 8px;
+  color: var(--art-text);
+  font-size: 13px;
+  font-weight: 600;
+
+  mat-icon {
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+    font-size: 17px;
+    color: var(--art-sienne);
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// ── Badges de Statut ─────────────────────────────────────────────
+.ord-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  // Statuts
+  &.badge-pending    { background: #FFF8E1; color: #92670A; .ord-badge__dot { background: #F59E0B; } }
+  &.badge-paid       { background: #E8F5E9; color: #1B5E20; .ord-badge__dot { background: #22C55E; } }
+  &.badge-processing { background: #E3F2FD; color: #0D47A1; .ord-badge__dot { background: #3B82F6; } }
+  &.badge-shipped    { background: #EDE7F6; color: #4A148C; .ord-badge__dot { background: #8B5CF6; } }
+  &.badge-delivered  { background: #CFF7E3; color: #065F46; .ord-badge__dot { background: #10B981; } }
+  &.badge-cancelled  { background: #FFE1E1; color: #991B1B; .ord-badge__dot { background: #EF4444; } }
+  &.badge-refunded   { background: #FFF3E0; color: #BF360C; .ord-badge__dot { background: #F97316; } }
+}
+
+// ── Montant ───────────────────────────────────────────────────────
+.ord-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--art-sienne);
+
+  small {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--art-text-light);
+    margin-left: 2px;
+  }
+}
+
+// ── Date ─────────────────────────────────────────────────────────
+.ord-date {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--art-text);
+}
+.ord-time {
+  display: block;
+  font-size: 11.5px;
+  color: var(--art-text-light);
+  margin-top: 2px;
+}
+
+// ── Boutons Actions ───────────────────────────────────────────────
+.ord-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ord-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  mat-icon { font-size: 17px; width: 17px; height: 17px; flex-shrink: 0; }
+
+  // Bouton Voir Détails
+  &--view {
+    background: rgba(212, 175, 119, 0.12);
+    color: var(--art-sienne);
+    padding: 8px 16px;
+    border: 1px solid rgba(212, 175, 119, 0.3);
+
+    mat-icon { color: var(--art-or); }
+
+    &:hover {
+      background: var(--art-or);
+      color: var(--art-nuit);
+      border-color: var(--art-or);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(212, 175, 119, 0.35);
+      mat-icon { color: var(--art-nuit); }
+    }
+  }
+
+  // Bouton Annuler
+  &--cancel {
+    background: transparent;
+    color: #C0392B;
+    padding: 8px;
+    border: 1px solid #FFE1E1;
+    border-radius: 10px;
+    min-width: 38px;
+    justify-content: center;
+
+    mat-icon { color: #C0392B; }
+
+    &:hover {
+      background: #FFE1E1;
+      border-color: #E74C3C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    }
+  }
+}
+
+// ── Pagination ────────────────────────────────────────────────────
+.ord-paginator-wrapper {
+  margin-top: 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--art-galet);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+::ng-deep .art-paginator {
+  background: transparent !important;
+  font-family: 'Inter', sans-serif !important;
+
+  .mat-mdc-paginator-outer-container { padding: 4px 8px; }
+  .mat-mdc-select-value { color: var(--art-nuit); }
+  .mat-mdc-icon-button { color: var(--art-sienne) !important; }
+  .mat-mdc-icon-button:hover { background: rgba(212,175,119,0.1) !important; }
+}
+
+// ── Empty State ──────────────────────────────────────────────────
+.ord-empty {
+  max-width: 480px;
+  margin: 72px auto;
+  text-align: center;
+  background: #FFFFFF;
+  padding: 56px 40px;
+  border-radius: 28px;
+  border: 2px dashed rgba(212, 175, 119, 0.5);
+  box-shadow: 0 4px 32px rgba(212, 175, 119, 0.08);
+
+  &__icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212,175,119,0.15), rgba(212,175,119,0.05));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    border: 1px solid rgba(212, 175, 119, 0.2);
+
+    mat-icon { font-size: 42px; width: 42px; height: 42px; color: var(--art-or); }
+  }
+
+  &__title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--art-nuit); margin: 0 0 12px 0; }
+  &__text  { font-family: 'Inter', sans-serif; font-size: 14.5px; color: var(--art-text-light); line-height: 1.6; margin: 0; }
+}
+
+// ── Responsive ───────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .ord-table {
+    min-width: 760px;
+
+    .col-date, .col-total { display: none; }
+    .col-num { width: 50%; }
+    .col-person { width: 30%; }
+    .col-status { width: 30%; }
+    .col-actions { width: 20%; }
+
+    thead th.col-date,
+    thead th.col-total { display: none; }
+  }
+
+  .ord-btn--view span { display: none; }
+  .ord-btn--view { padding: 8px; }
+}

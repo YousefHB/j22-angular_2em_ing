@@ -1,0 +1,158 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Galerie d'Administration (Gestion des Œuvres)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="page-container gallery-admin-page">
+
+  <!-- ── Header de Page ────────────────────────────────────────────── -->
+  <div class="gallery-header">
+    <div class="header-titles">
+      <h1>Gestion des Œuvres</h1>
+      <p class="subtitle">Organisez, exposez et valorisez les pièces de votre galerie.</p>
+    </div>
+    <div class="header-actions" *ngIf="canCreate">
+      <button mat-raised-button class="btn-primary-art btn-add" routerLink="/produits/creer">
+        <mat-icon>add</mat-icon> Nouvelle Œuvre
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Barre de Recherche & Filtres ──────────────────────────────── -->
+  <div class="filters-section">
+    <!-- Recherche moderne -->
+    <div class="search-bar-art">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" placeholder="Rechercher une œuvre, un artiste, une technique..." [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()">
+      <button mat-icon-button class="clear-btn" *ngIf="searchTerm" (click)="searchTerm=''; onSearchChange()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Pilules de Catégories -->
+    <div class="category-pills-container">
+      <div class="category-pills">
+        <button class="pill" [class.active]="selectedCategoryId === null" (click)="selectCategory(null)">
+          Toutes les œuvres
+        </button>
+        <button class="pill" *ngFor="let cat of categories" [class.active]="selectedCategoryId === cat.id"
+          (click)="selectCategory(cat.id)">
+          {{ cat.name }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- ── Sections par Catégories ───────────────────────────────────── -->
+  <ng-container *ngIf="!loading">
+
+    <div class="gallery-sections" *ngIf="filteredProducts.length > 0">
+
+      <div class="category-section" *ngFor="let group of groupedProductsByCategory">
+        <!-- En-tête de section -->
+        <div class="section-header">
+          <h2 class="section-title">{{ group.categoryName }}</h2>
+          <span class="section-count">{{ group.products.length }} {{ group.products.length > 1 ? 'œuvres' : 'œuvre'
+            }}</span>
+          <div class="section-line"></div>
+        </div>
+
+        <!-- Grille de cartes -->
+        <div class="art-grid">
+          <div class="art-card" *ngFor="let product of group.products">
+
+            <!-- Haut de carte : Image & Badges -->
+            <div class="card-image-wrapper">
+              <img [src]="product.imageUrl || 'assets/no-image.svg'" [alt]="product.name" class="card-img"
+                onerror="this.src='assets/no-image.svg'">
+
+              <!-- Badges positionnés sur l'image -->
+              <div class="badge-top-left">
+                <span class="badge badge-art-small">{{ getCategoryName(product) }}</span>
+              </div>
+              <div class="badge-top-right">
+                <span class="badge" [ngClass]="getStatusBadge(product).class">
+                  {{ getStatusBadge(product).text }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Corps de carte : Infos -->
+            <div class="card-body">
+              <h3 class="art-title">{{ product.name }}</h3>
+              <p class="art-artist"><mat-icon>brush</mat-icon> {{ product.sellerName }}</p>
+
+              <div class="art-details">
+                <!-- Prix -->
+                <div class="price-container">
+                  <ng-container *ngIf="hasDiscount(product)">
+                    <span class="price-old">{{ product.price | number:'1.2-2' }} DT</span>
+                    <span class="badge-discount">-{{ product.discountPercentage }}%</span>
+                  </ng-container>
+                  <span class="price-final">{{ getFinalPrice(product) | number:'1.2-2' }} DT</span>
+                </div>
+
+                <!-- Stock -->
+                <div class="stock-badge" [ngClass]="getStockClass(product)">
+                  <span class="dot"></span>
+                  {{ product.stock > 0 ? product.stock + ' en réserve' : 'Épuisée' }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Pied de carte : Actions -->
+            <div class="card-footer">
+              <button type="button" class="art-action-btn view" mat-icon-button title="Voir le détail"
+                aria-label="Voir le détail de l'œuvre" (click)="viewProduct(product)"
+                id="btn-voir-produit-{{product.id}}">
+                <mat-icon style="pointer-events: none;">visibility</mat-icon>
+              </button>
+
+              <div class="admin-actions" *ngIf="canCreate">
+                <button type="button" class="art-action-btn edit action-edit" mat-icon-button title="Modifier"
+                  aria-label="Modifier l'œuvre" (click)="editProduct(product)"
+                  id="btn-modifier-produit-{{product.id}}">
+                  <mat-icon style="pointer-events: none;">edit</mat-icon>
+                </button>
+                <button type="button" class="art-action-btn delete action-delete" mat-icon-button title="Supprimer"
+                  aria-label="Supprimer l'œuvre" (click)="deleteProduct(product)"
+                  id="btn-supprimer-produit-{{product.id}}">
+                  <mat-icon style="pointer-events: none;">delete_outline</mat-icon>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Empty State ───────────────────────────────────────────────── -->
+    <div class="empty-state-card fade-in-up" *ngIf="filteredProducts.length === 0">
+      <div class="empty-icon"><mat-icon>palette</mat-icon></div>
+      <h2 class="empty-title">Aucune œuvre trouvée</h2>
+      <p class="empty-text">Essayez une autre recherche ou ajoutez une nouvelle pièce à votre collection.</p>
+
+      <div class="empty-actions">
+        <button mat-stroked-button class="btn-outline-art" (click)="clearFilters()"
+          *ngIf="searchTerm || selectedCategoryId">
+          Réinitialiser les filtres
+        </button>
+        <button mat-raised-button class="btn-primary-art" *ngIf="canCreate" routerLink="/produits/creer">
+          <mat-icon>add</mat-icon> Nouvelle Œuvre
+        </button>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- Pagination optionnelle au bas si nécessaire -->
+  <mat-paginator *ngIf="!loading && allProducts.length > 0" [length]="totalElements" [pageSize]="pageSize"
+    [pageSizeOptions]="[12, 24, 50, 100]" (page)="onPageChange($event)" class="art-paginator">
+  </mat-paginator>
+
+</div>

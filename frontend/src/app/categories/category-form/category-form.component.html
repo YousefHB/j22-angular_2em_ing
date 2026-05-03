@@ -1,0 +1,59 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     ArtShop — Formulaire Catégorie
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="art-form-page">
+  <div class="art-form-header fade-in-up">
+    <div class="header-titles">
+      <h1>{{ isEdit ? 'Modifier la Catégorie' : 'Nouvelle Catégorie' }}</h1>
+      <p class="subtitle">{{ isEdit ? 'Modifiez le nom ou la description de cette collection.' : 'Créez une nouvelle collection pour classer vos œuvres.' }}</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button class="btn-art-outline" routerLink="/categories">
+        <mat-icon>arrow_back</mat-icon> Retour
+      </button>
+    </div>
+  </div>
+
+  <div class="art-form-card fade-in-up" style="animation-delay: 0.1s;">
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+      <!-- ── Informations Principales ────────────────────────────── -->
+      <h3 class="art-form-section-title">
+        <mat-icon>category</mat-icon> Informations de la catégorie
+      </h3>
+      
+      <div class="art-form-grid single-col">
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Nom de la catégorie</mat-label>
+          <input matInput formControlName="name" placeholder="Ex: Peintures Contemporaines">
+          <mat-error *ngIf="categoryForm.get('name')?.hasError('required')">Le nom est obligatoire.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="art-field">
+          <mat-label>Description (Optionnelle)</mat-label>
+          <textarea matInput formControlName="description" rows="3"
+                    placeholder="Courte description de cette collection d'œuvres..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Message Erreur Global -->
+      <div class="error-message-art" *ngIf="errorMessage">
+        <mat-icon>error</mat-icon> {{ errorMessage }}
+      </div>
+
+      <!-- ── Actions ─────────────────────────────────────────────── -->
+      <div class="art-form-actions">
+        <button mat-stroked-button type="button" class="btn-art-outline" routerLink="/categories">
+          Annuler
+        </button>
+        <button mat-raised-button type="submit" class="btn-art-primary"
+                [disabled]="categoryForm.invalid || loading">
+          <mat-spinner *ngIf="loading" diameter="20" style="margin-right: 8px; display: inline-block; vertical-align: middle;"></mat-spinner>
+          <mat-icon *ngIf="!loading">auto_awesome</mat-icon>
+          {{ isEdit ? 'Sauvegarder' : 'Créer la catégorie' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
