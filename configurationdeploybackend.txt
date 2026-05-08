@@ -1,0 +1,16 @@
+=== INFORMATIONS RENDER ===
+
+JWT Secret:
+6UyQOhrGlLj3OOsN1qcFiC9/AtGWmYYuZgsSajL7rtE=
+
+Database Internal URL:
+postgresql://shopflow_db_yb6f_user:nE7y6lV1xTysmo4hXxclqrdxniByDZ7J@dpg-d7ujrg67r5hc73b68uf0-a/shopflow_db_yb6f
+Database Username:
+shopflow_db_yb6f_user
+Database Password:
+nE7y6lV1xTysmo4hXxclqrdxniByDZ7J
+Frontend URL:
+https://shopflow-25917.web.app
+
+GitHub Repository:
+https://github.com/YousefHB/j22-angular_2em_ing.git
