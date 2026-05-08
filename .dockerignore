@@ -1,0 +1,30 @@
+# Ignore files not needed in Docker image
+target/
+.git/
+.github/
+.mvn/wrapper/maven-wrapper.jar
+*.md
+*.txt
+.env*
+.gitignore
+.dockerignore
+
+# Frontend files (not needed for backend)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
