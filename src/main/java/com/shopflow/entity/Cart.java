@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "carts")
+@Table(name = "carts") // le panier d’un utilisateur Il contient plusieurs produits via CartItem.
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = { "customer", "items" })
@@ -29,6 +29,18 @@ public class Cart {
     private User customer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    // mappedby La relation est contrôlée par le champ cart qui existe dans
+    // CartItem.
+    // cascade all =Les opérations faites sur le panier peuvent se propager aux
+    // items suprresion ou ...
+    // Si un CartItem est retiré de la collection items, il sera supprimé de la
+    // base.
+
+    // Avec orphanRemoval = true, le cartItem supprimé de la liste sera aussi
+    // supprimé de la table cart_items.
+
+    // Sans ça, il pourrait rester en base même s’il n’est plus dans le panier.
+
     @Builder.Default
     private Set<CartItem> items = new HashSet<>();
 

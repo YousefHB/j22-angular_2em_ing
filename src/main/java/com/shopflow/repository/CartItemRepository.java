@@ -11,7 +11,7 @@ import java.util.List;
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     List<CartItem> findByCartId(Long cartId);
 
-    @Modifying
-    @Transactional
+    @Modifying // @Modifying quand une requête change la base de donnée
+    @Transactional // Une transaction garantit que l’opération est faite proprement.
     void deleteByCartId(Long cartId);
 }

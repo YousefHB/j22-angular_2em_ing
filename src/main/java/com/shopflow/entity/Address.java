@@ -1,6 +1,6 @@
 package com.shopflow.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.*;//C’est ce qui permet à Java de créer une table dans la base de donées
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = { "user" })
-@NoArgsConstructor
+@NoArgsConstructor // @EqualsAndHashCode.Include
 @AllArgsConstructor
 @Builder
 public class Address {
@@ -23,13 +23,16 @@ public class Address {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(optional = false) // Un User peut avoir plusieurs Address
+    // optional false cad une adresse doit obligatoirement être liée à un
+    // utilisateur.
+    @JoinColumn(name = "user_id", nullable = false) // une colonne : user_id
     private User user;
 
     @Column(nullable = false)
     @NotBlank(message = "La rue est requise")
-    private String street;
+    private String street;// string Parce que certains codes postaux peuvent commencer par zéro 0030 et
+                          // int la rendre 30
 
     @Column(nullable = false)
     @NotBlank(message = "La ville est requise")
@@ -44,8 +47,8 @@ public class Address {
     private String country;
 
     @Column(nullable = false)
-    @Builder.Default
-    private Boolean isPrimary = false;
+    @Builder.Default // Grâce à @Builder.Default la valeur par défaut reste false
+    private Boolean isPrimary = false;// indique l'adresse est l’adresse principale de l’utilisateu
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
