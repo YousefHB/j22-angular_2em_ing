@@ -1,0 +1,22 @@
+-- ============================================
+-- PROMOUVOIR admin@shopflow.com EN ADMIN
+-- ============================================
+
+-- COPIEZ-COLLEZ CETTE COMMANDE:
+
+UPDATE users SET role = 'ADMIN' WHERE email = 'admin@shopflow.com';
+
+-- VÉRIFICATION:
+
+SELECT id, email, first_name, last_name, role, active FROM users WHERE email = 'admin@shopflow.com';
+
+-- RÉSULTAT ATTENDU: role = ADMIN
+
+-- ============================================
+-- APRÈS AVOIR EXÉCUTÉ:
+-- 1. Déconnectez-vous du frontend
+-- 2. Reconnectez-vous avec:
+--    Email: admin@shopflow.com
+--    Mot de passe: Admin@123
+-- 3. Vous êtes maintenant ADMIN!
+-- ============================================

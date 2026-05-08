@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -211,37 +212,55 @@ public class ProductService {
 
         private ProductResponse mapToResponse(Product product) {
                 // Calculer dynamiquement pour éviter les désynchronisations
-        java.util.List<com.shopflow.entity.Review> reviewsList = (product.getReviews() != null) 
-                        ? new java.util.ArrayList<>(product.getReviews()) 
-                        : new java.util.ArrayList<>();
-        BigDecimal rating = BigDecimal.ZERO;
-        int reviewCount = 0;
+                BigDecimal rating = BigDecimal.ZERO;
+                int reviewCount = 0;
 
-        if (!reviewsList.isEmpty()) {
-            Double avg = reviewsList.stream().mapToDouble(r -> r.getRating()).average().orElse(0.0);
-            rating = BigDecimal.valueOf(avg);
-            reviewCount = reviewsList.size();
-        }
+                try {
+                        java.util.List<com.shopflow.entity.Review> reviewsList = (product.getReviews() != null) 
+                                        ? new java.util.ArrayList<>(product.getReviews()) 
+                                        : new java.util.ArrayList<>();
 
-        return ProductResponse.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .promotionalPrice(product.getPromotionalPrice())
-                        .discountPercentage(product.getDiscountPercentage())
-                        .stock(product.getStock())
-                        .rating(rating)
-                        .reviewCount(reviewCount)
-                        .imageUrl(product.getImageUrl())
-                        .active(product.getActive())
-                        .sellerId(product.getSeller().getUser().getId())
-                        .sellerName(product.getSeller().getUser().getFirstName() + " "
-                                        + product.getSeller().getUser().getLastName())
-                        .categoryIds(product.getCategories().stream()
-                                        .map(Category::getId)
-                                        .collect(Collectors.toSet()))
-                        .createdAt(product.getCreatedAt())
-                        .build();
+                        if (!reviewsList.isEmpty()) {
+                                Double avg = reviewsList.stream().mapToDouble(r -> r.getRating()).average().orElse(0.0);
+                                rating = BigDecimal.valueOf(avg);
+                                reviewCount = reviewsList.size();
+                        }
+                } catch (Exception e) {
+                        // Si les reviews ne sont pas chargées (lazy loading), utiliser les valeurs par défaut
+                        log.debug("Reviews not loaded for product {}, using default values", product.getId());
+                        rating = product.getRating() != null ? product.getRating() : BigDecimal.ZERO;
+                        reviewCount = product.getReviewCount() != null ? product.getReviewCount() : 0;
+                }
+
+                Set<Long> categoryIds = new HashSet<>();
+                try {
+                        if (product.getCategories() != null) {
+                                categoryIds = product.getCategories().stream()
+                                                .map(Category::getId)
+                                                .collect(Collectors.toSet());
+                        }
+                } catch (Exception e) {
+                        // Si les catégories ne sont pas chargées (lazy loading), retourner un set vide
+                        log.debug("Categories not loaded for product {}, returning empty set", product.getId());
+                }
+
+                return ProductResponse.builder()
+                                .id(product.getId())
+                                .name(product.getName())
+                                .description(product.getDescription())
+                                .price(product.getPrice())
+                                .promotionalPrice(product.getPromotionalPrice())
+                                .discountPercentage(product.getDiscountPercentage())
+                                .stock(product.getStock())
+                                .rating(rating)
+                                .reviewCount(reviewCount)
+                                .imageUrl(product.getImageUrl())
+                                .active(product.getActive())
+                                .sellerId(product.getSeller().getUser().getId())
+                                .sellerName(product.getSeller().getUser().getFirstName() + " "
+                                                + product.getSeller().getUser().getLastName())
+                                .categoryIds(categoryIds)
+                                .createdAt(product.getCreatedAt())
+                                .build();
         }
 }

@@ -1,0 +1,32 @@
+═══════════════════════════════════════════════════════════════
+  PROMOUVOIR admin@shopflow.com EN ADMIN - ACTION IMMÉDIATE
+═══════════════════════════════════════════════════════════════
+
+ÉTAPE 1: Aller sur Render
+https://dashboard.render.com
+ÉTAPE 2: Cliquer sur
+→ shopflow_db_yb6f
+
+ÉTAPE 3: Cliquer sur
+→ "Connect" ou "Shell"
+
+ÉTAPE 4: COPIER-COLLER CETTE COMMANDE:
+
+UPDATE users SET role = 'ADMIN' WHERE email = 'admin@shopflow.com';
+
+ÉTAPE 5: VÉRIFIER:
+
+SELECT email, role FROM users WHERE email = 'admin@shopflow.com';
+
+RÉSULTAT ATTENDU: role = ADMIN
+
+ÉTAPE 6: Se reconnecter sur le frontend
+→ https://shopflow-25917.web.app/connexion
+→ Email: admin@shopflow.com
+→ Mot de passe: Admin@123
+
+✅ VOUS ÊTES MAINTENANT ADMIN!
+
+═══════════════════════════════════════════════════════════════
+TEMPS TOTAL: 2 MINUTES
+═══════════════════════════════════════════════════════════════
