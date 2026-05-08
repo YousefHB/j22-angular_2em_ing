@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { Cart, CartAddItemRequest } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api';
+const API_URL = environment.apiUrl;
 
 /**
  * Service HTTP Panier

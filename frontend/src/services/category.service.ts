@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category, CategoryCreateRequest } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api';
+const API_URL = environment.apiUrl;
 
 /**
  * Service HTTP Catégories
@@ -11,7 +12,7 @@ const API_URL = 'http://localhost:8084/api';
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   GetAllCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${API_URL}/categories`);

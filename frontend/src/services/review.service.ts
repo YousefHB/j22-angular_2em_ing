@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page, Review, ReviewCreateRequest } from 'src/Models/models';
 import { HttpParams } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api/reviews';
+const API_URL = `${environment.apiUrl}/reviews`;
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getReviewsByProduct(productId: number, page = 0, size = 10): Observable<Page<Review>> {
     const params = new HttpParams().set('page', page).set('size', size);

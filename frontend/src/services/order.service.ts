@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order, OrderCreateRequest, Page } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api';
+const API_URL = environment.apiUrl;
 
 /**
  * Service HTTP Commandes
@@ -11,7 +12,7 @@ const API_URL = 'http://localhost:8084/api';
 @Injectable({ providedIn: 'root' })
 export class OrderService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   GetAllOrders(page = 0, size = 10): Observable<Page<Order>> {
     const params = new HttpParams().set('page', page).set('size', size);

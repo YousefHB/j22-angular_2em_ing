@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Address, AddressCreateRequest } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api/addresses';
+const API_URL = `${environment.apiUrl}/addresses`;
 
 @Injectable({ providedIn: 'root' })
 export class AddressService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getMyAddresses(): Observable<Address[]> {
     return this.http.get<Address[]>(API_URL);

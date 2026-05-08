@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page, Product, ProductCreateRequest, ProductUpdateRequest } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api';
+const API_URL = environment.apiUrl;
 
 /**
  * Service HTTP Produits — méthodes CRUD typées
@@ -11,7 +12,7 @@ const API_URL = 'http://localhost:8084/api';
 @Injectable({ providedIn: 'root' })
 export class ProductService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   GetAllProducts(page = 0, size = 10): Observable<Page<Product>> {
     const params = new HttpParams().set('page', page).set('size', size);

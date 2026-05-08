@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdminDashboard, SellerDashboard } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api';
+const API_URL = environment.apiUrl;
 
 /**
  * Service HTTP Tableau de Bord
@@ -11,7 +12,7 @@ const API_URL = 'http://localhost:8084/api';
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   GetAdminDashboard(): Observable<AdminDashboard> {
     return this.http.get<AdminDashboard>(`${API_URL}/dashboard/admin`);

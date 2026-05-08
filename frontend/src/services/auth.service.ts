@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest } from 'src/Models/models';
+import { environment } from '../environments/environment';
 
-const API_URL = 'http://localhost:8084/api';
+const API_URL = environment.apiUrl;
 const TOKEN_KEY = 'sf_access_token';
 const REFRESH_KEY = 'sf_refresh_token';
 const USER_KEY = 'sf_user';
@@ -16,7 +17,7 @@ const USER_KEY = 'sf_user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   // ── API calls ──────────────────────────────────────────────────────────
 
@@ -74,8 +75,8 @@ export class AuthService {
     return user ? user.role : null;
   }
 
-  isAdmin(): boolean   { return this.getRole() === 'ADMIN'; }
-  isSeller(): boolean  { return this.getRole() === 'SELLER'; }
+  isAdmin(): boolean { return this.getRole() === 'ADMIN'; }
+  isSeller(): boolean { return this.getRole() === 'SELLER'; }
   isCustomer(): boolean { return this.getRole() === 'CUSTOMER'; }
 
   getUserId(): number | null {
